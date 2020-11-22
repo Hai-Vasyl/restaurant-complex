@@ -1,0 +1,71 @@
+$colors: (
+  main: whitesmoke,
+  secondary: rgb(215, 215, 215),
+  font: #000,
+  accent: #4a9edf,
+  accent-gradient: #684498,
+  title-simple: rgb(199, 199, 199),
+  danger: rgb(247, 120, 120),
+  bg: #2b2b3992,
+  font-white: #fff,
+);
+$shadows: (
+  main: (
+    0px 2px 3px rgb(36, 35, 41),
+  ),
+);
+
+@function getColor($color) {
+  @return map-get($colors, $color);
+}
+@function getShadow($shadow) {
+  @return map-get($shadows, $shadow);
+}
+@function getRadius($radius) {
+  @return map-get($radiuses, $radius);
+}
+@function getPadding($padding) {
+  @return map-get($paddings, $padding);
+}
+@function getTransition($transition) {
+  @return map-get($transitions, $transition);
+}
+@function getGradient($gradient) {
+  @return map-get($gradients, $gradient);
+}
+
+$radiuses: (
+  main: 3px,
+);
+$paddings: (
+  main: 20px,
+);
+$transitions: (
+  main: 0.3s ease,
+);
+$gradients: (
+  main:
+    linear-gradient(
+      to bottom right,
+      getColor(accent),
+      getColor(accent-gradient)
+    ),
+);
+
+%center-position {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+%flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+%image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

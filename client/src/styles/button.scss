@@ -1,0 +1,24 @@
+@import "base";
+
+.btn {
+  padding: 15px;
+  background-color: transparent;
+  border-radius: getRadius(main);
+  @extend %flex-center;
+  &__title {
+    margin: 3px;
+  }
+  &__icon {
+    margin: 3px;
+    font-size: 1.1em;
+  }
+}
+
+.btn-primary {
+  background-image: getGradient(main);
+  color: getColor(font-white);
+}
+
+.btn-simple {
+  border: 1px solid getColor(secondary);
+}

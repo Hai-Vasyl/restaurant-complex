@@ -1,0 +1,53 @@
+@import "base";
+@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+// font-family: 'Kaushan Script', cursive;
+// font-family: 'Dancing Script', cursive;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  background-color: getColor(main);
+  font-size: 1.02em;
+  color: getColor(font);
+}
+
+button,
+input {
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  color: getColor(font);
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+// .background {
+//   top: 45px;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background-color: getColor(bg);
+//   position: absolute;
+//   opacity: 0;
+//   visibility: hidden;
+//   transition: getTransition(main);
+//   &--active {
+//     opacity: 1;
+//     visibility: visible;
+//   }
+// }
+
+.btn-handler {
+  display: none;
+}

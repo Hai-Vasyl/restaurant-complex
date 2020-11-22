@@ -1,0 +1,16 @@
+@import "base";
+
+.field {
+  &__title {
+  }
+  &__input {
+    &--error {
+    }
+  }
+  &__error {
+    &--active {
+    }
+  }
+  &__error-icon {
+  }
+}
