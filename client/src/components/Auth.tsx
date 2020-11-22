@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAuth } from "../redux/actions/auth"
+import { RESET_ERRORS_AUTH, RESET_ERROR_AUTH } from "../redux/types/auth"
+import { RESET_POPUP } from "../redux/types/popup"
 import { RootStore } from "../redux/store"
 import { AiOutlineLogin, AiOutlineCheckCircle } from "react-icons/ai"
 import Button from "./Button"
 import Field from "./Field"
+import "../styles/auth.scss"
 
 const Auth: React.FC = () => {
   const [flipLogin, setFlipLogin] = useState(true)
   const {
     auth: { token, errors, loading },
+    popup: { authForm },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
   const [form, setForm] = useState([
@@ -45,15 +49,13 @@ const Auth: React.FC = () => {
             errorMsg = error.msg
           }
         })
-        if (errorMsg) {
-          return { ...field, msg: errorMsg }
-        }
-        return field
+        return { ...field, msg: errorMsg }
       })
     )
   }, [errors])
 
   const onChangeField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: RESET_ERROR_AUTH, payload: event.target.name })
     setForm((prevForm) =>
       prevForm.map((field) => {
         if (event.target.name === field.param) {
@@ -66,6 +68,7 @@ const Auth: React.FC = () => {
 
   const handleFlipForm = () => {
     setFlipLogin((prevFlip) => !prevFlip)
+    dispatch({ type: RESET_ERRORS_AUTH })
   }
 
   const handleSubmitForm = (
@@ -75,34 +78,49 @@ const Auth: React.FC = () => {
   ) => {
     event.preventDefault()
     try {
-    } catch (error) {
-      console.log(`Error from auth component: ${error.message}`)
-    }
+      const [username, email, password] = form
+
+      const loginCred = { email: email.value, password: password.value }
+      const registerCred = { ...loginCred, username: username.value }
+
+      dispatch(fetchAuth(flipLogin, flipLogin ? loginCred : registerCred))
+      dispatch({ type: RESET_POPUP })
+    } catch (error) {}
   }
 
   const fields = form.map((field) => {
-    return <Field key={field.param} change={onChangeField} field={field} />
+    return (
+      <Field
+        key={field.param}
+        exClass={flipLogin && field.param === "username" ? "field--close" : ""}
+        change={onChangeField}
+        field={field}
+      />
+    )
   })
 
-  console.log({ token, errors, loading })
+  console.log({ errors, token })
 
   return (
-    <div>
-      <form onSubmit={handleSubmitForm}>
+    <div className={`auth-form ${authForm && "auth-form--open"}`}>
+      <div className='auth-form__title'>
+        {flipLogin ? "Увійти" : "Реєстрація"}
+      </div>
+      <form className='auth-form__fields' onSubmit={handleSubmitForm}>
         {fields}
         <button className='btn-handler'></button>
       </form>
-      <div>
+      <div className='auth-form__btns'>
         <Button
           Icon={flipLogin ? AiOutlineLogin : AiOutlineCheckCircle}
           exClass='btn-primary'
-          title={flipLogin ? "Sign In" : "Sign Up"}
+          title={flipLogin ? "Увійти" : "Реєстрація"}
           click={handleSubmitForm}
         />
         <Button
           Icon={flipLogin ? AiOutlineCheckCircle : AiOutlineLogin}
           exClass='btn-simple'
-          title={flipLogin ? "Sign Up" : "Sign In"}
+          title={flipLogin ? "Реєстрація" : "Увійти"}
           click={handleFlipForm}
         />
       </div>

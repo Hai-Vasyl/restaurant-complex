@@ -6,6 +6,7 @@ import {
 } from "../types/auth"
 import { Dispatch } from "redux"
 import axios from "axios"
+import { http } from "../../http"
 
 interface ICredentials {
   username?: string
@@ -20,13 +21,16 @@ export const fetchAuth = (
   try {
     dispatch({ type: FETCH_START_AUTH })
     const res = await axios({
-      url: `/auth/${isLogin ? "login" : "register"}`,
+      url: `${http}/auth/${isLogin ? "login" : "register"}`,
       method: "post",
       data: credentials,
     })
     dispatch({ type: FETCH_SUCCESS_AUTH, payload: res.data })
   } catch (error) {
     console.log("ERROR: ", error.response.data.errors)
-    dispatch({ type: FETCH_ERROR_AUTH, payload: error.response.data.errors })
+    dispatch({
+      type: FETCH_ERROR_AUTH,
+      payload: error.response.data.errors ? error.response.data.errors : [],
+    })
   }
 }

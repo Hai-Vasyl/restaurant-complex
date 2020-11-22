@@ -1,16 +1,47 @@
 @import "base";
 
 .field {
+  display: block;
+  margin-bottom: 7px;
+  &--close {
+    display: none;
+  }
   &__title {
+    display: block;
+    padding: 3px 0;
   }
   &__input {
+    width: 100%;
+    padding: 7px;
+    border-radius: getRadius(main);
+    background-color: transparent;
+    border: 1px solid getColor(secondary);
+    transition: getTransition(main);
+    &:focus {
+      border-color: getColor(accent);
+    }
     &--error {
+      border-color: getColor(danger);
     }
   }
   &__error {
+    opacity: 0;
+    visibility: hidden;
+    transition: getTransition(main);
+    font-size: 0.8em;
+    color: getColor(danger);
+    height: 16px;
+    @extend %flex-center;
+    justify-content: flex-start;
+    & > :last-child {
+      margin-left: 5px;
+    }
     &--active {
+      opacity: 1;
+      visibility: visible;
     }
   }
   &__error-icon {
+    transition: getTransition(main);
   }
 }

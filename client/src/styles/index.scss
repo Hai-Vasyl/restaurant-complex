@@ -32,21 +32,30 @@ button {
   border: none;
 }
 
-// .background {
-//   top: 45px;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   background-color: getColor(bg);
-//   position: absolute;
-//   opacity: 0;
-//   visibility: hidden;
-//   transition: getTransition(main);
-//   &--active {
-//     opacity: 1;
-//     visibility: visible;
-//   }
-// }
+.background {
+  top: 49px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: getColor(bg);
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: getTransition(main);
+  &--active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.wrapper {
+  width: 1240px;
+  max-width: 100%;
+  padding: 69px 20px;
+  padding-bottom: 20px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
 
 .btn-handler {
   display: none;

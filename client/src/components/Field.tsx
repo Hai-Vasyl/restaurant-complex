@@ -30,7 +30,6 @@ const Field: React.FC<IFieldProps> = ({ field, change, exClass }) => {
         className={`field__error ${
           field.msg?.length && "field__error--active"
         }`}>
-        {field.msg}
         <BiError className='field__error-icon' /> <span>{field.msg}</span>
       </span>
     </label>

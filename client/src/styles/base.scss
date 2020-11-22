@@ -1,18 +1,16 @@
 $colors: (
   main: whitesmoke,
   secondary: rgb(215, 215, 215),
+  secondary-shadow: rgb(150, 150, 150),
   font: #000,
+  dark: #333,
+  light-dark: lighten(#333, 3%),
   accent: #4a9edf,
   accent-gradient: #684498,
   title-simple: rgb(199, 199, 199),
-  danger: rgb(247, 120, 120),
-  bg: #2b2b3992,
+  danger: red,
+  bg: #9d9da092,
   font-white: #fff,
-);
-$shadows: (
-  main: (
-    0px 2px 3px rgb(36, 35, 41),
-  ),
 );
 
 @function getColor($color) {
@@ -34,6 +32,15 @@ $shadows: (
   @return map-get($gradients, $gradient);
 }
 
+$shadows: (
+  main: (
+    0px 10px 13px getColor(secondary-shadow),
+  ),
+  secondary: (
+    0px 4px 5px getColor(secondary-shadow),
+  ),
+);
+
 $radiuses: (
   main: 3px,
 );
@@ -52,7 +59,7 @@ $gradients: (
     ),
 );
 
-%center-position {
+%position-center {
   position: absolute;
   top: 50%;
   left: 50%;

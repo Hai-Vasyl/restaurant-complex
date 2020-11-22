@@ -4,6 +4,7 @@
   padding: 15px;
   background-color: transparent;
   border-radius: getRadius(main);
+  transition: getTransition(main);
   @extend %flex-center;
   &__title {
     margin: 3px;
@@ -12,13 +13,24 @@
     margin: 3px;
     font-size: 1.1em;
   }
+  &:active {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
 }
 
 .btn-primary {
   background-image: getGradient(main);
   color: getColor(font-white);
+  box-shadow: getShadow(secondary);
+  &:hover {
+    box-shadow: none;
+  }
 }
 
 .btn-simple {
   border: 1px solid getColor(secondary);
+  &:hover {
+    border-color: getColor(accent);
+  }
 }

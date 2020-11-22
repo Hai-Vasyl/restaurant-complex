@@ -1,0 +1,41 @@
+@import "base";
+
+.auth-form {
+  @extend %position-center;
+  width: 450px;
+  border: 1px solid getColor(secondary);
+  border-radius: getRadius(main);
+  background-color: getColor(main);
+  box-shadow: getShadow(main);
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: getTransition(main);
+  transform: translate(-50%, -50%) scale(0.8);
+  &--open {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  &__title {
+    text-align: center;
+    font-size: 2em;
+    // font-weight: bold;
+    padding: 20px 0;
+    border-bottom: 1px solid getColor(secondary);
+    color: getColor(accent);
+  }
+  &__fields {
+    padding: 20px;
+    padding-bottom: 10px;
+  }
+  &__btns {
+    padding: 20px;
+    padding-top: 0px;
+    @extend %flex-center;
+    align-items: stretch;
+    & > :last-child {
+      margin-left: 10px;
+    }
+  }
+}

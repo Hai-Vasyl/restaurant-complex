@@ -2,6 +2,9 @@ import {
   FETCH_ERROR_AUTH,
   FETCH_SUCCESS_AUTH,
   FETCH_START_AUTH,
+  RESET_ERRORS_AUTH,
+  RESET_ERROR_AUTH,
+  SET_AUTH,
   IAuthSuccess,
   IAuthError,
   ActionsDispatch,
@@ -42,6 +45,7 @@ const authReducer = (state = initState, action: ActionsDispatch) => {
       }
     case FETCH_SUCCESS_AUTH:
       const { user: userSuccess, token: tokenSuccess } = action.payload
+      localStorage.setItem("auth", JSON.stringify(action.payload))
       return {
         ...state,
         user: userSuccess,
@@ -54,6 +58,36 @@ const authReducer = (state = initState, action: ActionsDispatch) => {
         ...state,
         errors: action.payload,
         loading: false,
+      }
+    case SET_AUTH:
+      const auth = JSON.parse(localStorage.getItem("auth") || "{}")
+      if (auth.user) {
+        return {
+          ...state,
+          user: auth.user,
+          token: auth.token,
+        }
+      }
+      return state
+    case RESET_ERRORS_AUTH:
+      return {
+        ...state,
+        errors: [],
+      }
+    case RESET_ERROR_AUTH:
+      let stateResetError = [...state.errors]
+      const paramResetError = action.payload
+
+      stateResetError = stateResetError.map((error) => {
+        if (error.param === paramResetError) {
+          return { ...error, msg: "" }
+        }
+        return error
+      })
+
+      return {
+        ...state,
+        errors: stateResetError,
       }
     default:
       return state

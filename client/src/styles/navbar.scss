@@ -1,0 +1,74 @@
+@import "base";
+
+.nav {
+  background-color: getColor(dark);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  left: 0;
+  font-size: 0.9em;
+  box-shadow: getShadow(secondary);
+  &__menu {
+    width: 1300px;
+    max-width: 100%;
+    padding: 0px 30px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.logo-link {
+  @extend %flex-center;
+  text-decoration: none;
+  color: getColor(font-white);
+  margin-right: auto;
+  &__logo {
+    font-size: 2.5em;
+  }
+  &__title {
+    margin-left: 10px;
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: getColor(font-white);
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  transition: getTransition(main);
+  @extend %flex-center;
+  padding: 13px;
+  background-color: getColor(dark);
+  & > :last-child {
+    margin-left: 7px;
+  }
+  &--active {
+    border-top-color: getColor(accent);
+    background-color: getColor(light-dark);
+    .link__icon {
+      color: getColor(accent);
+    }
+  }
+  &__img-wrapper {
+    width: 34px;
+    height: 34px;
+    display: block;
+  }
+  &__img {
+    @extend %image;
+  }
+  &__icon {
+    transition: getTransition(main);
+    font-size: 1.1em;
+  }
+  &__title {
+  }
+}
+
+.link-extended {
+  padding: 0px 13px;
+  align-self: stretch;
+}
