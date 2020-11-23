@@ -1,7 +1,10 @@
 import express from "express"
 import mongoose from "mongoose"
 import bodyParser from "body-parser"
-import usersRoutes from "./routes/users"
+import userRoutes from "./routes/users"
+import daterangeRoutes from "./routes/daterange"
+import hrcomplexRoutes from "./routes/hrcomplex"
+import imageRoutes from "./routes/image"
 import cors from "cors"
 import { config } from "dotenv"
 config()
@@ -26,7 +29,13 @@ const { PORT, MONGO_USER, MONGO_PASS, MONGO_DB, NODE_ENV } = process.env
       () => console.log("MongoDB successfully connected!")
     )
 
-    app.use("/auth", usersRoutes)
+    app.use("/auth", userRoutes)
+    app.use("/daterange", daterangeRoutes)
+    app.use("/hrcomplex", hrcomplexRoutes)
+    app.use("/image", imageRoutes)
+    // app.get("/test", (req, res) => {
+    //   res.json("Works")
+    // })
 
     app.listen(PORT, () => console.log(`Server started on port: ${PORT}`))
   } catch (error) {

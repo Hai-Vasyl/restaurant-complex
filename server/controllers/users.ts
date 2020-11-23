@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 import { config } from "dotenv"
 config()
 
-const { JWT_SECRET } = process.env
+const { JWT_SECRET }: any = process.env
 
 export const register_user = async (req: any, res: any) => {
   try {
