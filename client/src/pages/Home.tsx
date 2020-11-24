@@ -1,9 +1,54 @@
 import React from "react"
+import "../styles/home.scss"
+import { GiMountaintop } from "react-icons/gi"
+// @ts-ignore
+import imageMain from "../images/undraw_nature_m5ll.svg"
+import Button from "../components/Button"
+import { useHistory } from "react-router-dom"
+import { BsKanban, BsChatSquareQuote } from "react-icons/bs"
 
 const Home: React.FC = () => {
+  const history = useHistory()
+  const handleLinkTo = (path: string) => {
+    history.push(path)
+  }
+
   return (
-    <div className='wrapper'>
-      <div>Home page</div>
+    <div className='wrapper-home'>
+      <div className='background-home'></div>
+      <div className='wrapper'>
+        <div className='info'>
+          <div className='info__content'>
+            <h1 className='logotype'>
+              <GiMountaintop className='logotype__icon' />
+              <span className='logotype__title'>ART VILLAGE</span>
+            </h1>
+            <p className='info__paragraph'>
+              Lorem ipsum dolor sit amet, consectetur
+              <br /> adipiscing elit, sed do eiusmod tempor
+              <br /> incididunt ut labore et dolore magna aliqua. <br />
+              Ut enim ad minim veniam
+            </p>
+            <div className='info__btns'>
+              <Button
+                exClass={"btn-primary"}
+                Icon={BsKanban}
+                click={() => handleLinkTo("/booking")}
+                title='Бронюваня'
+              />
+              <Button
+                exClass={"btn-simple"}
+                Icon={BsChatSquareQuote}
+                click={() => handleLinkTo("/responses")}
+                title='Відгуки'
+              />
+            </div>
+          </div>
+          <div className='info__image'>
+            <img className='info__thumbnail' src={imageMain} alt='imgMain' />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

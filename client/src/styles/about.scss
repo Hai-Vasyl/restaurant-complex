@@ -1,0 +1,86 @@
+@import "base";
+
+.slider {
+  display: flex;
+  height: 70vh;
+  padding: 12px;
+  border: 1px solid getColor(secondary);
+  border-radius: getRadius(main);
+  background-color: getColor(font-white);
+  &__img-preview {
+    @extend %image;
+    object-fit: contain;
+  }
+  &__preview {
+    width: 75%;
+    position: relative;
+    margin-right: 6px;
+    border-left: 1px solid getColor(secondary);
+    border-right: 1px solid getColor(secondary);
+  }
+  &__stack {
+    width: 25%;
+    margin-left: 6px;
+    overflow-y: auto;
+    padding: 0px 5px;
+    box-shadow: getShadow(insetDeep);
+    border-radius: getRadius(main);
+    &::-webkit-scrollbar {
+      width: 0.6em;
+      border-radius: getRadius(main);
+    }
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: getColor(secondary);
+      outline: 2px solid getColor(accent);
+      cursor: pointer;
+    }
+  }
+}
+
+.image {
+  border: 1px solid transparent;
+  transition: getTransition(main);
+  border-radius: getRadius(main);
+  padding: 10px;
+  cursor: pointer;
+  &__thumbnail {
+    @extend %image;
+  }
+  &--active {
+    border-color: getColor(accent);
+    transform: scale(0.85);
+    box-shadow: getShadow(hightlight);
+  }
+}
+
+.img-info {
+  padding: 1em 0;
+  &__title {
+    // font-family: "Kaushan Script", cursive;
+    font-weight: normal;
+    font-family: "Pacifico", cursive;
+    font-size: 2em;
+    border-bottom: 1px solid getColor(secondary);
+  }
+  &__paragraph {
+    border-bottom: 1px solid getColor(secondary);
+    padding: 1em;
+  }
+}
+
+.section {
+  padding: 1em 0;
+  &__title {
+    font-family: "Pacifico", cursive;
+    font-size: 2em;
+    font-weight: normal;
+    border-bottom: 1px solid getColor(secondary);
+  }
+  &__paragraph {
+    padding: 1em;
+    font-size: 1.1em;
+  }
+}

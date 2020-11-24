@@ -1,3 +1,4 @@
+import { Image } from "../models"
 import AWS from "aws-sdk"
 import { config } from "dotenv"
 import { v4 as uuidv4 } from "uuid"
@@ -12,6 +13,7 @@ const s3 = new AWS.S3({
 export const upload_image = async (req: any, res: any) => {
   try {
     const { file } = req
+    const { hrComplex, title, description } = req.body
 
     const imageParts = file.originalname.split(".")
     const imageExt = imageParts[imageParts.length - 1]
@@ -23,11 +25,20 @@ export const upload_image = async (req: any, res: any) => {
     }
 
     // @ts-ignore
-    s3.upload(params, (error, data) => {
+    s3.upload(params, async (error, data) => {
       if (error) {
         res.status(400).json(`Uploading file error: ${error.message}`)
       }
-      res.status(200).send(data)
+
+      const image = new Image({
+        path: data.Location,
+        hrComplex,
+        title,
+        description,
+      })
+      const newImage = await image.save()
+
+      res.status(200).send(newImage)
     })
   } catch (error) {
     res.json(`Upload image error: ${error.message}`)
@@ -49,5 +60,17 @@ export const delete_image = async (req: any, res: any) => {
     return {}
   } catch (error) {
     res.json(`Upload image error: ${error.message}`)
+  }
+}
+
+export const get_images = async (req: any, res: any) => {
+  try {
+    const { hrComplex } = req.body
+
+    const images = await Image.find({ hrComplex })
+
+    res.json(images)
+  } catch (error) {
+    res.json(`Getting image error: ${error.message}`)
   }
 }

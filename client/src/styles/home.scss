@@ -1,0 +1,72 @@
+@import "base";
+
+.background-home {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  clip-path: circle(65.1% at 39% 40%);
+  background-color: getColor(main);
+  z-index: -1;
+}
+
+.wrapper-home {
+  background-color: #333;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -2;
+  // background-image: url("./images/588500-field-forest-carpathians-mountains-ukraine.jpg");
+}
+
+.info {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  padding: 0 4em;
+  transform: translateY(-50%);
+  @extend %flex-center;
+  &__btns {
+    @extend %flex-center;
+    justify-content: flex-start;
+    padding-top: 1em;
+    padding-left: 0.5em;
+    & > :last-child {
+      margin-left: 10px;
+    }
+  }
+  &__content {
+    width: 40%;
+  }
+  &__paragraph {
+    font-size: 1.3em;
+    padding: 1.2em 0;
+    padding-bottom: 1em;
+    padding-left: 0.5em;
+    border-bottom: 1px solid getColor(secondary);
+  }
+  &__image {
+    width: 60%;
+    padding-left: 5.5em;
+  }
+  &__thumbnail {
+    @extend %image;
+  }
+}
+
+.logotype {
+  font-family: "Pacifico", cursive;
+  @extend %flex-center;
+  justify-content: flex-start;
+  &__icon {
+    font-size: 2.2em;
+  }
+  &__title {
+    font-size: 1.4em;
+    margin-left: 12px;
+  }
+}

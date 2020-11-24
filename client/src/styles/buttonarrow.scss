@@ -1,0 +1,38 @@
+@import "base";
+
+.btn-arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 1.2em;
+  height: 90px;
+  width: 40px;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  border: 1px solid getColor(secondary);
+  transition: getTransition(main);
+  &__icon {
+    margin: auto;
+    color: getColor(secondary);
+    font-weight: bold;
+  }
+  &:active {
+    opacity: 0.5;
+    transform: translateY(-50%) scale(0.9);
+  }
+}
+
+.btn-arrow-left {
+  left: 0;
+  border-left: none;
+  border-top-right-radius: getRadius(main);
+  border-bottom-right-radius: getRadius(main);
+  transform: translate(-1px, -50%);
+}
+
+.btn-arrow-right {
+  right: 0;
+  border-right: none;
+  border-top-left-radius: getRadius(main);
+  border-bottom-left-radius: getRadius(main);
+  transform: translate(1px, -50%);
+}

@@ -2,7 +2,7 @@ $colors: (
   main: whitesmoke,
   secondary: rgb(215, 215, 215),
   secondary-shadow: rgb(150, 150, 150),
-  font: #000,
+  font: #333,
   dark: #333,
   light-dark: lighten(#333, 3%),
   accent: #4a9edf,
@@ -38,6 +38,15 @@ $shadows: (
   ),
   secondary: (
     0px 4px 5px getColor(secondary-shadow),
+  ),
+  hightlight: (
+    0px 0px 25px getColor(accent),
+  ),
+  insetDeep: (
+    inset 0px 0px 13px getColor(secondary-shadow),
+  ),
+  deep: (
+    0px 0px 18px getColor(secondary-shadow),
   ),
 );
 
