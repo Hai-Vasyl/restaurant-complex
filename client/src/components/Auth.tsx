@@ -41,6 +41,12 @@ const Auth: React.FC = () => {
   ])
 
   useEffect(() => {
+    if (token) {
+      dispatch({ type: RESET_POPUP })
+    }
+  }, [token])
+
+  useEffect(() => {
     setForm((prevForm) =>
       prevForm.map((field) => {
         let errorMsg = ""
@@ -84,7 +90,6 @@ const Auth: React.FC = () => {
       const registerCred = { ...loginCred, username: username.value }
 
       dispatch(fetchAuth(flipLogin, flipLogin ? loginCred : registerCred))
-      dispatch({ type: RESET_POPUP })
     } catch (error) {}
   }
 

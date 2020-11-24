@@ -30,7 +30,7 @@
     transition: getTransition(main);
     font-size: 0.8em;
     color: getColor(danger);
-    height: 16px;
+    height: 18px;
     @extend %flex-center;
     justify-content: flex-start;
     & > :last-child {

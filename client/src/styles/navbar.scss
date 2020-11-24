@@ -3,13 +3,13 @@
 .nav {
   background-color: getColor(dark);
   position: fixed;
-  z-index: 10;
+  z-index: 13;
   top: 0;
   left: 0;
   right: 0;
   left: 0;
   font-size: 0.9em;
-  box-shadow: getShadow(secondary);
+  box-shadow: getShadow(deep);
   &__menu {
     width: 1300px;
     max-width: 100%;

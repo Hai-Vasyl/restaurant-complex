@@ -3,13 +3,20 @@ import axios from "axios"
 import { http } from "../http"
 import { IImage, IHRComplexInfo } from "../interfaces"
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs"
+import { useDispatch, useSelector } from "react-redux"
 import ButtonArrow from "../components/ButtonArrow"
+import { fetchImages } from "../redux/actions/images"
+import { RootStore } from "../redux/store"
 import "../styles/about.scss"
 
 const About: React.FC = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
   const [initLoading, setInitLoading] = useState(true)
   const activeTabImage = useRef<HTMLDivElement>(null)
+  const dispatch = useDispatch()
+  const {
+    images: { images, loading },
+  } = useSelector((state: RootStore) => state)
   const [hrComplexInfo, setHrComplexInfo] = useState<IHRComplexInfo>({
     title: "",
     location: "",
@@ -21,37 +28,19 @@ const About: React.FC = () => {
     contacts: "",
     road: "",
   })
-  const [images, setImages] = useState<IImage[]>([])
   const [imageActive, setImageActive] = useState<IImage>({
+    _id: "",
     title: "",
     description: "",
-    _id: "",
     path: "",
     hrComplex: "",
   })
   const [error, setError] = useState("")
 
   useEffect(() => {
-    setInitLoading(true)
-    const fetchData = async () => {
-      try {
-        const res = await axios({
-          url: `${http}/image/all`,
-          method: "post",
-          data: {
-            hrComplex,
-          },
-        })
-        setImages(res.data)
-        setImageActive(res.data[0])
-        setInitLoading(false)
-      } catch (error) {
-        setError(`Error fetching images: ${error.message}`)
-      }
-    }
-
-    fetchData()
-  }, [hrComplex, http])
+    dispatch(fetchImages(hrComplex))
+    setInitLoading(false)
+  }, [hrComplex, dispatch])
 
   useEffect(() => {
     activeTabImage.current?.scrollIntoView({
@@ -59,6 +48,12 @@ const About: React.FC = () => {
       block: "center",
     })
   }, [imageActive])
+
+  useEffect(() => {
+    if (images.length) {
+      setImageActive(images[0])
+    }
+  }, [images])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,7 +99,7 @@ const About: React.FC = () => {
     setImageActive(image)
   }
 
-  if (initLoading) {
+  if (initLoading || loading) {
     return (
       <div className='wrapper'>
         <div>LOADING...</div>
@@ -118,7 +113,6 @@ const About: React.FC = () => {
       </div>
     )
   }
-
   return (
     <div className='wrapper'>
       <div className='slider'>

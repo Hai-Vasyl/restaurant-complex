@@ -27,7 +27,6 @@ export const fetchAuth = (
     })
     dispatch({ type: FETCH_SUCCESS_AUTH, payload: res.data })
   } catch (error) {
-    console.log("ERROR: ", error.response.data.errors)
     dispatch({
       type: FETCH_ERROR_AUTH,
       payload: error.response.data.errors ? error.response.data.errors : [],
