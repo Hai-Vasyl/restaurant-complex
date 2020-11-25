@@ -15,7 +15,7 @@ const About: React.FC = () => {
   const activeTabImage = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
   const {
-    images: { images, loading },
+    images: { images, loading, fetched },
   } = useSelector((state: RootStore) => state)
   const [hrComplexInfo, setHrComplexInfo] = useState<IHRComplexInfo>({
     title: "",
@@ -38,9 +38,11 @@ const About: React.FC = () => {
   const [error, setError] = useState("")
 
   useEffect(() => {
-    dispatch(fetchImages(hrComplex))
+    if (!fetched) {
+      dispatch(fetchImages(hrComplex))
+    }
     setInitLoading(false)
-  }, [hrComplex, dispatch])
+  }, [fetched, hrComplex, dispatch])
 
   useEffect(() => {
     activeTabImage.current?.scrollIntoView({

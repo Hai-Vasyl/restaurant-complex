@@ -3,14 +3,14 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 import routes, { IRoute } from "../modules/routes"
-import { TOGGLE_FORM_AUTH } from "../redux/types/popup"
+import { RESET_POPUP } from "../redux/types/popup"
 import Auth from "./Auth"
 import Navbar from "./Navbar"
 
 const Routes: React.FC = () => {
   const {
     auth: { token, user },
-    popup: { authForm },
+    popup: { authForm, popupImg },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
 
@@ -25,8 +25,10 @@ const Routes: React.FC = () => {
       <Navbar />
       <Auth />
       <div
-        onClick={() => dispatch({ type: TOGGLE_FORM_AUTH })}
-        className={`background ${authForm && "background--active"}`}></div>
+        onClick={() => dispatch({ type: RESET_POPUP })}
+        className={`background ${
+          (authForm || popupImg) && "background--active"
+        }`}></div>
       {token ? (
         user.role === "admin" ? (
           <Switch>

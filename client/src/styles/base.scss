@@ -33,6 +33,7 @@ $colors: (
   @return map-get($gradients, $gradient);
 }
 
+$font-second: "Pacifico", cursive;
 $shadows: (
   main: (
     0px 10px 13px getColor(dark-shadow),
@@ -50,7 +51,6 @@ $shadows: (
     0px 0px 15px getColor(dark-shadow),
   ),
 );
-
 $radiuses: (
   main: 3px,
 );

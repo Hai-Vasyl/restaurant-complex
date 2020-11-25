@@ -7,11 +7,13 @@ import { IImage } from "../../interfaces"
 
 interface IInitState {
   loading: boolean
+  fetched: boolean
   images: IImage[]
 }
 
 const initState: IInitState = {
   loading: false,
+  fetched: false,
   images: [],
 }
 
@@ -26,6 +28,7 @@ const imageReducer = (state = initState, action: ActionsDispatch) => {
       return {
         loading: false,
         images: action.payload,
+        fetched: true
       }
     default:
       return state
