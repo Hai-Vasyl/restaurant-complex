@@ -45,3 +45,32 @@
     transition: getTransition(main);
   }
 }
+
+.select {
+  @extend %flex-center;
+  align-items: stretch;
+  border: 1px solid getColor(secondary);
+  &__title {
+    flex: 1;
+    @extend %flex-center;
+  }
+  &__options {
+    background-image: getGradient(main);
+    padding: 7px;
+    color: getColor(font-white);
+    flex: 1;
+    cursor: pointer;
+    box-shadow: getShadow(secondary);
+    transition: getTransition(main);
+    &:active {
+      opacity: 0.5;
+      transform: scale(0.9);
+    }
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  &__option {
+    color: getColor(font);
+  }
+}

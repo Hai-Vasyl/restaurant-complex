@@ -3,17 +3,24 @@ import FieldDateRange from "../components/FieldDateRange"
 import axios from "axios"
 import { http } from "../http"
 import { IDateRange } from "../interfaces"
-import { BsPlus, BsX, BsArrowRight } from "react-icons/bs"
+import { BsPlus, BsX, BsArrowRight, BsPlusSquare } from "react-icons/bs"
 // @ts-ignore
 import bgImage from "../images/undraw_publish_post_vowb.svg"
 import { BiError } from "react-icons/bi"
 import Field from "../components/Field"
+import Title from "../components/Title"
 import "../styles/createdaterange.scss"
 
 const CreateDateRange: React.FC = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
   const [initLoading, setInitLoading] = useState(true)
-  const [dateRange, setDateRange] = useState<[string, string]>(["", ""])
+  const [dateRange, setDateRange] = useState<{
+    settlement: string
+    eviction: string
+  }>({
+    settlement: "",
+    eviction: "",
+  })
   const [dates, setDates] = useState<IDateRange[]>([])
   const [errorFetch, setErrorFetch] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
@@ -40,9 +47,22 @@ const CreateDateRange: React.FC = () => {
     fetchData()
   }, [hrComplex, http])
 
-  const onChangePicker = (value: any, formatString: [string, string]) => {
-    setDateRange([formatString[0].slice(0, 10), formatString[1].slice(0, 10)])
-    setErrorMsg("")
+  const onChangePicker = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (new Date(event.target.value) < new Date()) {
+      return setErrorMsg("Ви не можете вибрати дату яка закінчилася!")
+    }
+
+    setDateRange({ ...dateRange, [event.target.name]: event.target.value })
+
+    Object.keys(dateRange).forEach((date) => {
+      if (
+        event.target.name !== date &&
+        //@ts-ignore
+        new Date(dateRange[date]) >= new Date()
+      ) {
+        setErrorMsg("")
+      }
+    })
   }
 
   const handleChangePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,9 +71,12 @@ const CreateDateRange: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
+      if (dateRange.settlement > dateRange.eviction) {
+        return setErrorMsg("Діапазон дат не валідний!")
+      }
       let intersects = false
       for (let i = 0; i < dates.length; i++) {
-        dateRange.forEach((item) => {
+        Object.values(dateRange).forEach((item) => {
           if (
             new Date(item) >= new Date(dates[i].settlement) &&
             new Date(item) <= new Date(dates[i].eviction)
@@ -70,8 +93,8 @@ const CreateDateRange: React.FC = () => {
       }
 
       const newDateRange = {
-        settlement: dateRange[0],
-        eviction: dateRange[1],
+        settlement: dateRange.settlement,
+        eviction: dateRange.eviction,
         hrComplex,
         price,
       }
@@ -84,7 +107,10 @@ const CreateDateRange: React.FC = () => {
       })
 
       setDates((prevDates) => [...prevDates, res.data.dateRange])
-      setDateRange(["", ""])
+      setDateRange({
+        settlement: "",
+        eviction: "",
+      })
       setPrice("")
     } catch (error) {}
   }
@@ -107,11 +133,14 @@ const CreateDateRange: React.FC = () => {
     return <div className='wrapper'>Error happend: {errorFetch}</div>
   }
 
-  const fieldFilled = dateRange[0].length && price.length
+  const fieldFilled =
+    !errorMsg.length &&
+    dateRange.settlement.length &&
+    dateRange.eviction.length &&
+    price.length
   return (
     <div className='wrapper'>
-      {/* <h3></div> */}
-
+      <Title Icon={BsPlusSquare} title='Створити слот' />
       <div className='range-form'>
         <div className='range-form__tools'>
           <div className='range-form__btns'>
@@ -119,7 +148,7 @@ const CreateDateRange: React.FC = () => {
             <Field
               disableError={true}
               exClass='range-form__price'
-              field={{ value: price, param: "price", placeholder: "Price" }}
+              field={{ title: "Ціна:", value: price, param: "price" }}
               change={handleChangePrice}
             />
             <button
@@ -136,9 +165,11 @@ const CreateDateRange: React.FC = () => {
             {errorMsg}
           </div>
           <div className='range-form__dates'>
-            {dates.map((date: any) => {
+            {dates.map((date) => {
               return (
-                <div className='slot' key={date._id}>
+                <div
+                  className={`slot ${date.booked && "slot--disabled"}`}
+                  key={date._id}>
                   <span className='slot__settlement'>
                     {date.settlement.slice(0, 10)}
                   </span>
@@ -148,7 +179,9 @@ const CreateDateRange: React.FC = () => {
                   </span>
                   <span className='slot__price'>{date.price} &#8372;</span>
                   <button
-                    className='slot__btn-delete'
+                    className={`slot__btn-delete ${
+                      date.booked && "slot__btn-delete--disabled"
+                    }`}
                     onClick={() => handleDelete(date._id)}>
                     <BsX />
                   </button>

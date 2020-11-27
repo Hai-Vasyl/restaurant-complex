@@ -44,7 +44,7 @@ const Gallery: React.FC = () => {
   }
   return (
     <div className='wrapper'>
-      <Title Icon={BsImages} />
+      <Title Icon={BsImages} title='Галерея' />
       <div className={`img-popup ${popupImg && "img-popup--active"}`}>
         <ButtonArrow
           exClass='img-popup__arrow arrow-left'

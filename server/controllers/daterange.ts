@@ -33,3 +33,15 @@ export const delete_daterange = async (req: any, res: any) => {
     res.status(400).json(`Deleting DateRange error: ${error.message}`)
   }
 }
+
+export const book_daterange = async (req: any, res: any) => {
+  try {
+    const { dateId } = req.params
+    const dateRange: any = await DateRange.findById(dateId)
+    await DateRange.updateOne({ _id: dateId }, { booked: !dateRange.booked })
+
+    res.json({ message: "Date range updated successfully" })
+  } catch (error) {
+    res.status(400).json(`Booking DateRange error: ${error.message}`)
+  }
+}

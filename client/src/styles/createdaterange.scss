@@ -1,21 +1,24 @@
 @import "base";
 
+.date-picker.field {
+  margin-bottom: 0px;
+}
+
 .date-picker {
-  transition: getTransition(main);
   flex: 1;
+  .field__input {
+    font-size: 0.9em;
+    border-radius: 0px;
+    width: auto;
+    padding: 0px 7px;
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+  }
 }
 
-.ant-picker-range {
-  padding: 7px;
-  background-color: transparent;
-  border: 1px solid getColor(secondary);
-  width: 100%;
-  height: 40px;
-  border-radius: 0px;
-}
-
-.ant-picker-input > input:placeholder-shown {
-  border-right: 1px solid getColor(secondary);
+.picker-settlement.field__input {
+  border-right-color: transparent;
 }
 
 .range-form {
@@ -24,15 +27,22 @@
     width: 50%;
     background-color: getColor(font-white);
     padding: 20px;
-    height: 85vh;
+    height: 83vh;
     display: flex;
     flex-direction: column;
   }
+  &__sort {
+    margin-bottom: 10px;
+    position: relative;
+  }
+  &__price.field {
+    margin-bottom: 0px;
+  }
   &__price {
+    margin-left: 10px;
     .field__input {
       border-radius: 0px;
       height: 40px;
-      margin-left: 10px;
       width: 100px;
       max-width: auto;
     }
@@ -42,7 +52,16 @@
   }
   &__btns {
     @extend %flex-center;
+    align-items: flex-end;
+  }
+  &__btns-main {
+    @extend %flex-center;
     align-items: stretch;
+    justify-content: flex-start;
+    padding-top: 20px;
+    & > :last-child {
+      margin-left: 10px;
+    }
   }
   &__error {
     @extend %flex-center;
@@ -88,14 +107,12 @@
   transition: getTransition(main);
   opacity: 1;
   transform: scale(1);
-  border: 1px solid getColor(secondary);
-
+  border: 1px solid getColor(accent);
   &__icon {
     margin: auto;
     font-size: 1.1em;
   }
   &:hover {
-    border-color: getColor(accent);
     .btn-create__icon {
       color: getColor(accent);
     }
@@ -127,6 +144,10 @@
   border-bottom: 1px solid getColor(secondary);
   cursor: default;
   background-color: getColor(font-white);
+  &--disabled {
+    background-color: getColor(bg-danger);
+    border-color: getColor(danger);
+  }
   &:hover {
     .slot__btn-delete {
       opacity: 1;
@@ -134,15 +155,16 @@
     }
   }
   &__settlement {
+    background-color: getColor(main);
+    padding: 4px;
   }
   &__eviction {
+    background-color: getColor(main);
+    padding: 4px;
   }
   &__price {
     @extend %flex-center;
-    & > :last-child {
-      font-size: 0.7em;
-      color: getColor(secondary);
-    }
+    font-weight: bold;
   }
   &__btn-delete {
     display: flex;
@@ -160,5 +182,85 @@
       transform: scale(0.9);
       opacity: 0.5;
     }
+    &--disabled {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+}
+
+.slot-btn {
+  @extend %flex-center;
+  justify-content: space-between;
+  background-color: getColor(font-white);
+  width: 100%;
+  padding: 14px;
+  border-bottom: 1px solid getColor(secondary);
+  transition: getTransition(main);
+  &--booked {
+    background-color: getColor(bg-danger);
+    border-color: getColor(danger);
+  }
+  &--chosen {
+    background-color: getColor(bg-success);
+    border-color: getColor(success);
+  }
+  &__check {
+    width: 25px;
+    height: 25px;
+    border: 1px solid getColor(secondary);
+    @extend %flex-center;
+    transition: getTransition(main);
+    & > * {
+      font-size: 1.2em;
+      opacity: 0;
+      transition: getTransition(main);
+      color: getColor(success);
+    }
+    &--checked {
+      border-color: getColor(success);
+      & > * {
+        opacity: 1;
+      }
+    }
+  }
+  &__settlement {
+    background-color: getColor(main);
+    padding: 4px;
+  }
+  &__eviction {
+    background-color: getColor(main);
+    padding: 4px;
+  }
+  &__price {
+  }
+  &__grivna-sign {
+    font-size: 0.9em;
+    color: getColor(secondary);
+  }
+  &__arrow-right {
+    color: getColor(secondary);
+  }
+}
+
+.sort-chevron {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid getColor(secondary);
+  background-color: getColor(main);
+  margin: 0px 14px;
+  @extend %flex-center;
+  transition: getTransition(main);
+  & > * {
+    margin: auto;
+  }
+  &:hover {
+    border-color: getColor(accent);
+  }
+  &:active {
+    opacity: 0.5;
   }
 }

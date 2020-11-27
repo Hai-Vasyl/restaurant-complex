@@ -25,4 +25,5 @@ export interface IDateRange {
   hrComplex: string
   booked: string
   price: string
+  chosen?: boolean
 }

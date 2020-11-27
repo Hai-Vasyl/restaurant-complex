@@ -61,7 +61,7 @@
   &__title {
     // font-family: "Kaushan Script", cursive;
     font-weight: normal;
-    font-family: "Pacifico", cursive;
+    font-family: $font-second;
     font-size: 2em;
     border-bottom: 1px solid getColor(secondary);
   }
