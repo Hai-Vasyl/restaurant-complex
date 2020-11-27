@@ -59,3 +59,20 @@ button {
 .btn-handler {
   display: none;
 }
+
+.title {
+  @extend %flex-center;
+  border-bottom: 1px solid getColor(secondary);
+  padding-bottom: 0.5em;
+  justify-content: flex-start;
+  font-family: $font-second;
+  &__icon {
+    font-size: 2em;
+    color: getColor(secondary);
+  }
+  &__text {
+    padding-left: 10px;
+    font-size: 1.4em;
+    font-weight: normal;
+  }
+}

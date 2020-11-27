@@ -1,0 +1,164 @@
+@import "base";
+
+.date-picker {
+  transition: getTransition(main);
+  flex: 1;
+}
+
+.ant-picker-range {
+  padding: 7px;
+  background-color: transparent;
+  border: 1px solid getColor(secondary);
+  width: 100%;
+  height: 40px;
+  border-radius: 0px;
+}
+
+.ant-picker-input > input:placeholder-shown {
+  border-right: 1px solid getColor(secondary);
+}
+
+.range-form {
+  display: flex;
+  &__tools {
+    width: 50%;
+    background-color: getColor(font-white);
+    padding: 20px;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+  }
+  &__price {
+    .field__input {
+      border-radius: 0px;
+      height: 40px;
+      margin-left: 10px;
+      width: 100px;
+      max-width: auto;
+    }
+    &::placeholder {
+      color: getColor(secondary);
+    }
+  }
+  &__btns {
+    @extend %flex-center;
+    align-items: stretch;
+  }
+  &__error {
+    @extend %flex-center;
+    color: getColor(danger);
+    justify-content: flex-start;
+    font-size: 0.8em;
+    height: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: getTransition(main);
+    &--active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  &__error-icon {
+    margin-right: 5px;
+  }
+  &__bg-img {
+    width: 50%;
+    padding: 20px;
+    border-right: 1px solid getColor(secondary);
+  }
+  &__img {
+    @extend %image;
+    object-fit: contain;
+  }
+  &__dates {
+    border: 1px solid getColor(secondary);
+    overflow-y: auto;
+    flex: 1;
+    background-color: getColor(main);
+    margin-top: 0.5em;
+  }
+}
+
+.btn-create {
+  margin-left: 10px;
+  width: 40px;
+  height: 40px;
+  @extend %flex-center;
+  background-color: getColor(main);
+  transition: getTransition(main);
+  opacity: 1;
+  transform: scale(1);
+  border: 1px solid getColor(secondary);
+
+  &__icon {
+    margin: auto;
+    font-size: 1.1em;
+  }
+  &:hover {
+    border-color: getColor(accent);
+    .btn-create__icon {
+      color: getColor(accent);
+    }
+  }
+  &:active {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  &--disabled {
+    border-color: transparent;
+    cursor: default;
+    &:hover {
+      border-color: transparent;
+      .btn-create__icon {
+        color: getColor(font);
+      }
+    }
+    &:active {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+.slot {
+  @extend %flex-center;
+  justify-content: space-between;
+  padding: 14px;
+  border-bottom: 1px solid getColor(secondary);
+  cursor: default;
+  background-color: getColor(font-white);
+  &:hover {
+    .slot__btn-delete {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  &__settlement {
+  }
+  &__eviction {
+  }
+  &__price {
+    @extend %flex-center;
+    & > :last-child {
+      font-size: 0.7em;
+      color: getColor(secondary);
+    }
+  }
+  &__btn-delete {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: 1px solid getColor(secondary);
+    opacity: 0;
+    visibility: hidden;
+    transition: getTransition(main);
+    & > * {
+      margin: auto;
+    }
+    &:active {
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
+  }
+}

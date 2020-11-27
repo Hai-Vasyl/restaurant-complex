@@ -17,3 +17,12 @@ export interface IHRComplexInfo {
   contacts: string
   road: string
 }
+
+export interface IDateRange {
+  _id: string
+  settlement: string
+  eviction: string
+  hrComplex: string
+  booked: string
+  price: string
+}

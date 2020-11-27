@@ -4,12 +4,14 @@ import Booking from "../pages/Booking"
 import Gallery from "../pages/Gallery"
 import Profile from "../pages/Profile"
 import Orders from "../pages/Orders"
+import CreateDateRange from "../pages/CreateDateRange"
 import Responses from "../pages/Responses"
 import {
   BsHouse,
   BsInfoSquare,
   BsImages,
   BsKanban,
+  BsPlus,
   BsChatSquareQuote,
 } from "react-icons/bs"
 import { FiShoppingCart } from "react-icons/fi"
@@ -54,6 +56,13 @@ export const getLinks = (userId: string, username: string): ILink[] => {
       activeClassName: "link--active",
     },
     {
+      to: "/create-date-range",
+      Icon: BsPlus,
+      title: "Створити слот",
+      className: "link",
+      activeClassName: "link--active",
+    },
+    {
       to: "/gallery",
       Icon: BsImages,
       title: "Галерея",
@@ -94,7 +103,11 @@ const mainRoutes: IRoute[] = [
 ]
 
 const routes = {
-  admin: [...mainRoutes, { component: Orders, path: "/orders" }],
+  admin: [
+    ...mainRoutes,
+    { component: Orders, path: "/orders" },
+    { component: CreateDateRange, path: "/create-date-range" },
+  ],
   user: [...mainRoutes, { component: Orders, path: "/orders" }],
   unregUser: [...mainRoutes],
 }

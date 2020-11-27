@@ -3,21 +3,28 @@ import { BiError } from "react-icons/bi"
 import "../styles/field.scss"
 
 interface IFieldProps {
+  disableError?: boolean
   field: {
+    placeholder?: string
     param: string
     type?: string
     value: string
-    title: string
+    title?: string
     msg?: string
   }
   change: (event: React.ChangeEvent<HTMLInputElement>) => void | undefined
   exClass?: string
 }
 
-const Field: React.FC<IFieldProps> = ({ field, change, exClass }) => {
+const Field: React.FC<IFieldProps> = ({
+  field,
+  change,
+  exClass,
+  disableError = false,
+}) => {
   return (
     <label className={`field ${exClass}`} key={field.param}>
-      <span className='field__title'>{field.title}</span>
+      {field.title && <span className='field__title'>{field.title}</span>}
       <input
         className={`field__input ${field.msg?.length && "field__input--error"}`}
         type={field.type}
@@ -25,13 +32,16 @@ const Field: React.FC<IFieldProps> = ({ field, change, exClass }) => {
         value={field.value}
         onChange={change}
         autoComplete='off'
+        placeholder={field.placeholder?.length ? field.placeholder : ""}
       />
-      <span
-        className={`field__error ${
-          field.msg?.length && "field__error--active"
-        }`}>
-        <BiError className='field__error-icon' /> <span>{field.msg}</span>
-      </span>
+      {!disableError && (
+        <span
+          className={`field__error ${
+            field.msg?.length && "field__error--active"
+          }`}>
+          <BiError className='field__error-icon' /> <span>{field.msg}</span>
+        </span>
+      )}
     </label>
   )
 }

@@ -27,6 +27,12 @@ const Navbar: React.FC = () => {
           const isProfileLink = link.to === `/user/${user._id}`
           if ((isProfileLink || link.to === "/orders") && !token) {
             return
+          } else if (
+            link.to === "/create-date-range" &&
+            !token &&
+            user.role !== "admin"
+          ) {
+            return
           }
           return (
             <NavLink

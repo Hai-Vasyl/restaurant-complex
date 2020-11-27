@@ -5,7 +5,9 @@ import { fetchImages } from "../redux/actions/images"
 import { IImage } from "../interfaces"
 import { TOGGLE_POPUP_IMG } from "../redux/types/popup"
 import ButtonArrow from "../components/ButtonArrow"
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
+import { BsArrowLeft, BsArrowRight, BsImages } from "react-icons/bs"
+import useMoveSlider from "../hooks/useMoveSlider"
+import Title from "../components/Title"
 import "../styles/gallery.scss"
 
 const Gallery: React.FC = () => {
@@ -23,6 +25,7 @@ const Gallery: React.FC = () => {
     path: "",
     hrComplex: "",
   })
+  const { handleMove } = useMoveSlider()
 
   useEffect(() => {
     if (!fetched) {
@@ -41,12 +44,12 @@ const Gallery: React.FC = () => {
   }
   return (
     <div className='wrapper'>
-      {/* <h3>Gallery page</div> */}
+      <Title Icon={BsImages} />
       <div className={`img-popup ${popupImg && "img-popup--active"}`}>
         <ButtonArrow
           exClass='img-popup__arrow arrow-left'
           Icon={BsArrowLeft}
-          click={() => console.log("qwe")}
+          click={() => handleMove(activeImage, images, true, setActiveImage)}
         />
         <div className='img-popup__wrapper'>
           <div className='img-popup__preview'>
@@ -64,7 +67,7 @@ const Gallery: React.FC = () => {
         <ButtonArrow
           exClass='img-popup__arrow arrow-right'
           Icon={BsArrowRight}
-          click={() => console.log("qwe")}
+          click={() => handleMove(activeImage, images, false, setActiveImage)}
         />
       </div>
 
