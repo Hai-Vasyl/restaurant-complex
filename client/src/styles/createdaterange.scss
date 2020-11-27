@@ -31,6 +31,23 @@
     display: flex;
     flex-direction: column;
   }
+  &__msg {
+    @extend %flex-center;
+    justify-content: flex-start;
+    color: getColor(danger);
+    font-size: 0.8em;
+    transition: getTransition(main);
+    opacity: 0;
+    visibility: hidden;
+    height: 18px;
+    & > :first-child {
+      margin-right: 5px;
+    }
+    &--error {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
   &__sort {
     margin-bottom: 10px;
     position: relative;
@@ -58,7 +75,7 @@
     @extend %flex-center;
     align-items: stretch;
     justify-content: flex-start;
-    padding-top: 20px;
+    padding-top: 10px;
     & > :last-child {
       margin-left: 10px;
     }
@@ -144,14 +161,20 @@
   border-bottom: 1px solid getColor(secondary);
   cursor: default;
   background-color: getColor(font-white);
-  &--disabled {
-    background-color: getColor(bg-danger);
-    border-color: getColor(danger);
-  }
   &:hover {
     .slot__btn-delete {
       opacity: 1;
       visibility: visible;
+    }
+  }
+  &--disabled {
+    background-color: getColor(bg-danger);
+    border-color: getColor(danger);
+    &:hover {
+      .slot__btn-delete {
+        visibility: hidden;
+        opacity: 0;
+      }
     }
   }
   &__settlement {
@@ -182,10 +205,6 @@
       transform: scale(0.9);
       opacity: 0.5;
     }
-    &--disabled {
-      visibility: hidden;
-      opacity: 0;
-    }
   }
 }
 
@@ -200,10 +219,15 @@
   &--booked {
     background-color: getColor(bg-danger);
     border-color: getColor(danger);
+    cursor: default !important;
   }
   &--chosen {
     background-color: getColor(bg-success);
     border-color: getColor(success);
+  }
+  &--denied {
+    background-color: getColor(bg-warning);
+    border-color: getColor(warning);
   }
   &__check {
     width: 25px;

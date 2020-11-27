@@ -178,9 +178,7 @@ const CreateDateRange: React.FC = () => {
                   </span>
                   <span className='slot__price'>{date.price} &#8372;</span>
                   <button
-                    className={`slot__btn-delete ${
-                      date.booked && "slot__btn-delete--disabled"
-                    }`}
+                    className='slot__btn-delete'
                     onClick={() => handleDelete(date._id)}>
                     <BsX />
                   </button>

@@ -37,13 +37,14 @@
 
 .btn-disabled {
   box-shadow: none;
-  border: none;
+  border-color: transparent;
   background-color: getColor(main);
   background-image: none;
   color: getColor(font);
   cursor: default;
   &:hover {
     opacity: 1;
+    border-color: transparent;
   }
   &:active {
     transform: none;

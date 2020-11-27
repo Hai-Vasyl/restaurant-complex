@@ -5,12 +5,18 @@ import { BsDashCircle, BsCheckCircle } from "react-icons/bs"
 import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 import { TOGGLE_CONFIRM_FORM } from "../redux/types/popup"
+import { UPDATE_DATE } from "../redux/types/dates"
+import { IDateRange } from "../interfaces"
+import { SET_ERROR_MSG_BOOKING } from "../redux/types/error"
 import axios from "axios"
+import { http } from "../http"
 
 const Confirm = () => {
+  const hrComplex = "5fbc47e525b10c027c2d5f8b"
   const {
     popup: { confirmForm },
-    auth: { user },
+    auth: { user, token },
+    dates: { dates },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
   const [form, setForm] = useState([
@@ -59,13 +65,71 @@ const Confirm = () => {
   ) => {
     try {
       event.preventDefault()
+
+      let chosenDates: IDateRange[] = []
+      dates.forEach((date) => {
+        if (date.chosen) {
+          chosenDates.push(date)
+        }
+      })
+
+      const [firstname, lastname, phone] = form
+
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          user: {
+            ...user,
+            firstname: firstname.value,
+            lastname: lastname.value,
+            phone: phone.value,
+          },
+          token,
+        })
+      )
+
       const res = await axios({
-        url: ``,
+        url: `${http}/daterange/booking`,
         method: "post",
         data: {
-          data: "",
+          dates: chosenDates,
+          user: {
+            firstname: firstname.value,
+            lastname: lastname.value,
+            phone: phone.value,
+          },
+          hrComplex,
+        },
+        headers: token && {
+          Authorization: `Basic ${token}`,
         },
       })
+
+      const { message, dates: resDates } = res.data
+      if (resDates && resDates.length) {
+        const newDates = [...dates].map((date) => {
+          let newDate = date
+          resDates.forEach((resDate: IDateRange) => {
+            if (date._id === resDate._id) {
+              newDate = resDate
+            }
+          })
+          return newDate
+        })
+        dispatch({ type: SET_ERROR_MSG_BOOKING, payload: message })
+        dispatch({ type: UPDATE_DATE, payload: newDates })
+      } else {
+        const newDates = [...dates].map((date) => {
+          if (date.chosen) {
+            return { ...date, booked: true, chosen: false }
+          }
+          return date
+        })
+
+        dispatch({ type: UPDATE_DATE, payload: newDates })
+      }
+
+      dispatch({ type: TOGGLE_CONFIRM_FORM })
     } catch (error) {}
   }
 

@@ -12,17 +12,19 @@ import {
 import Title from "../components/Title"
 import SortField from "../components/SortField"
 import Button from "../components/Button"
-import "../styles/booking.scss"
 import { useDispatch, useSelector } from "react-redux"
 import { TOGGLE_CONFIRM_FORM } from "../redux/types/popup"
 import { fetchDates } from "../redux/actions/dates"
 import { RootStore } from "../redux/store"
 import { UPDATE_DATE } from "../redux/types/dates"
+import { CLEAR_ERROR_MSG_BOOKING } from "../redux/types/error"
+import { BiError } from "react-icons/bi"
 
 const Booking: React.FC = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
   const {
     dates: { dates, loading },
+    error: { msgBooking },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
   const [initLoading, setInitLoading] = useState(true)
@@ -61,8 +63,8 @@ const Booking: React.FC = () => {
       }
       return date
     })
-
     dispatch({ type: UPDATE_DATE, payload: newDates })
+    dispatch({ type: CLEAR_ERROR_MSG_BOOKING })
   }
 
   const handleReset = () => {
@@ -70,6 +72,7 @@ const Booking: React.FC = () => {
       return { ...date, chosen: false }
     })
     dispatch({ type: UPDATE_DATE, payload: newDates })
+    dispatch({ type: CLEAR_ERROR_MSG_BOOKING })
   }
 
   const handleApply = () => {
@@ -120,7 +123,9 @@ const Booking: React.FC = () => {
             {dates.map((date) => {
               return (
                 <button
-                  className={`slot-btn ${date.chosen && "slot-btn--chosen"} ${
+                  className={`slot-btn ${
+                    date.chosen && date.booked && "slot-btn--denied"
+                  } ${date.chosen && "slot-btn--chosen"} ${
                     date.booked && "slot-btn--booked"
                   }`}
                   key={date._id}
@@ -145,6 +150,12 @@ const Booking: React.FC = () => {
                 </button>
               )
             })}
+          </div>
+          <div
+            className={`range-form__msg ${
+              msgBooking.length && "range-form__msg--error"
+            }`}>
+            <BiError /> {msgBooking}
           </div>
           <div className='range-form__btns-main'>
             <Button
