@@ -2,17 +2,25 @@ import React, { useState, useEffect } from "react"
 import FieldDateRange from "../components/FieldDateRange"
 import axios from "axios"
 import { http } from "../http"
-import { IDateRange } from "../interfaces"
 import { BsPlus, BsX, BsArrowRight, BsPlusSquare } from "react-icons/bs"
 // @ts-ignore
 import bgImage from "../images/undraw_publish_post_vowb.svg"
 import { BiError } from "react-icons/bi"
 import Field from "../components/Field"
 import Title from "../components/Title"
+import { useSelector, useDispatch } from "react-redux"
+import { RootStore } from "../redux/store"
+import { CREATE_NEW_DATE, DELETE_DATE } from "../redux/types/dates"
+import { fetchDates } from "../redux/actions/dates"
 import "../styles/createdaterange.scss"
 
 const CreateDateRange: React.FC = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
+  const {
+    auth: { token },
+    dates: { dates, loading },
+  } = useSelector((state: RootStore) => state)
+  const dispatch = useDispatch()
   const [initLoading, setInitLoading] = useState(true)
   const [dateRange, setDateRange] = useState<{
     settlement: string
@@ -21,44 +29,29 @@ const CreateDateRange: React.FC = () => {
     settlement: "",
     eviction: "",
   })
-  const [dates, setDates] = useState<IDateRange[]>([])
   const [errorFetch, setErrorFetch] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
   const [price, setPrice] = useState("")
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios({
-          url: `${http}/daterange/all`,
-          method: "post",
-          data: {
-            hrComplex,
-          },
-        })
-        setDates(res.data)
-        setInitLoading(false)
-      } catch (error) {
-        setInitLoading(false)
-        setErrorFetch(`Error fetching date ranges: ${error.message}`)
-      }
-    }
-
-    fetchData()
-  }, [hrComplex, http])
+    dispatch(fetchDates(hrComplex))
+    setInitLoading(false)
+  }, [dispatch, hrComplex])
 
   const onChangePicker = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (new Date(event.target.value) < new Date()) {
       return setErrorMsg("Ви не можете вибрати дату яка закінчилася!")
     }
 
-    setDateRange({ ...dateRange, [event.target.name]: event.target.value })
+    const dateRangeCopy: any = { ...dateRange }
 
-    Object.keys(dateRange).forEach((date) => {
+    setDateRange({ ...dateRangeCopy, [event.target.name]: event.target.value })
+
+    Object.keys(dateRangeCopy).forEach((date) => {
       if (
         event.target.name !== date &&
-        //@ts-ignore
-        new Date(dateRange[date]) >= new Date()
+        new Date(dateRangeCopy[date]) >= new Date() &&
+        new Date(dateRangeCopy[date]) >= new Date()
       ) {
         setErrorMsg("")
       }
@@ -104,9 +97,12 @@ const CreateDateRange: React.FC = () => {
         data: {
           ...newDateRange,
         },
+        headers: token && {
+          Authorization: `Basic ${token}`,
+        },
       })
 
-      setDates((prevDates) => [...prevDates, res.data.dateRange])
+      dispatch({ type: CREATE_NEW_DATE, payload: res.data.dateRange })
       setDateRange({
         settlement: "",
         eviction: "",
@@ -120,13 +116,16 @@ const CreateDateRange: React.FC = () => {
       await axios({
         url: `${http}/daterange/delete-date-range/${id}`,
         method: "delete",
+        headers: token && {
+          Authorization: `Basic ${token}`,
+        },
       })
 
-      setDates((prevDates) => prevDates.filter((date) => date._id !== id))
+      dispatch({ type: DELETE_DATE, payload: id })
     } catch (error) {}
   }
 
-  if (initLoading) {
+  if (initLoading || loading) {
     return <div className='wrapper'>LOADING ...</div>
   }
   if (errorFetch.length) {

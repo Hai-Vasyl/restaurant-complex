@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react"
-import axios from "axios"
-import { http } from "../http"
-import { IDateRange } from "../interfaces"
 // @ts-ignore
 import bgImage from "../images/undraw_updates_et2k.svg"
 import {
@@ -16,35 +13,26 @@ import Title from "../components/Title"
 import SortField from "../components/SortField"
 import Button from "../components/Button"
 import "../styles/booking.scss"
+import { useDispatch, useSelector } from "react-redux"
+import { TOGGLE_CONFIRM_FORM } from "../redux/types/popup"
+import { fetchDates } from "../redux/actions/dates"
+import { RootStore } from "../redux/store"
+import { UPDATE_DATE } from "../redux/types/dates"
 
 const Booking: React.FC = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
+  const {
+    dates: { dates, loading },
+  } = useSelector((state: RootStore) => state)
+  const dispatch = useDispatch()
   const [initLoading, setInitLoading] = useState(true)
-  const [dates, setDates] = useState<IDateRange[]>([])
   const [selectedSort, setSelectedSort] = useState("settlement")
   const [sortBehaviour, setSortBehaviour] = useState(true)
-  const [errorFetch, setErrorFetch] = useState("")
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios({
-          url: `${http}/daterange/all`,
-          method: "post",
-          data: {
-            hrComplex,
-          },
-        })
-        setDates(res.data)
-        setInitLoading(false)
-      } catch (error) {
-        setInitLoading(false)
-        setErrorFetch(`Error fetching date ranges: ${error.message}`)
-      }
-    }
-
-    fetchData()
-  }, [hrComplex, http])
+    dispatch(fetchDates(hrComplex))
+    setInitLoading(false)
+  }, [dispatch, hrComplex])
 
   useEffect(() => {
     const compare = (firstItem: any, secondItem: any) => {
@@ -59,34 +47,44 @@ const Booking: React.FC = () => {
       }
     }
 
-    setDates((prevDates) => [...prevDates].sort(compare))
-  }, [selectedSort, sortBehaviour])
+    dispatch({ type: UPDATE_DATE, payload: [...dates].sort(compare) })
+  }, [dispatch, selectedSort, sortBehaviour])
 
   const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSort(event.target.value)
   }
 
   const handleBook = (id: string) => {
-    setDates((prevDates) =>
-      prevDates.map((date) => {
-        if (date._id === id && !date.booked) {
-          return { ...date, chosen: !date.chosen }
-        }
-        return date
-      })
-    )
+    const newDates = [...dates].map((date) => {
+      if (date._id === id && !date.booked) {
+        return { ...date, chosen: !date.chosen }
+      }
+      return date
+    })
+
+    dispatch({ type: UPDATE_DATE, payload: newDates })
   }
 
   const handleReset = () => {
-    setDates((prevDates) =>
-      prevDates.map((date) => {
-        return { ...date, chosen: false }
-      })
-    )
+    const newDates = [...dates].map((date) => {
+      return { ...date, chosen: false }
+    })
+    dispatch({ type: UPDATE_DATE, payload: newDates })
   }
 
   const handleApply = () => {
-    console.log("apply")
+    dispatch({ type: TOGGLE_CONFIRM_FORM })
+  }
+
+  const checkChanges = () => {
+    let isChosen = false
+    dates.forEach((date) => {
+      if (date.chosen) {
+        isChosen = true
+      }
+    })
+
+    return isChosen
   }
 
   const selectOption = [
@@ -95,11 +93,10 @@ const Booking: React.FC = () => {
     { value: "booked", title: "Доступні" },
   ]
 
-  if (initLoading) {
+  const isChosen = checkChanges()
+
+  if (initLoading || loading) {
     return <div className='wrapper'>LOADING ...</div>
-  }
-  if (errorFetch.length) {
-    return <div className='wrapper'>Error happend: {errorFetch}</div>
   }
   return (
     <div className='wrapper'>
@@ -151,16 +148,16 @@ const Booking: React.FC = () => {
           </div>
           <div className='range-form__btns-main'>
             <Button
-              exClass='btn-primary'
+              exClass={`btn-primary ${!isChosen && "btn-disabled"}`}
               title='Застосувати'
               Icon={BsCheck}
-              click={handleApply}
+              click={isChosen ? handleApply : () => {}}
             />
             <Button
-              exClass='btn-simple'
+              exClass={`btn-simple ${!isChosen && "btn-disabled"}`}
               title='Скинути'
               Icon={BsX}
-              click={handleReset}
+              click={isChosen ? handleReset : () => {}}
             />
           </div>
         </div>

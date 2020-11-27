@@ -34,7 +34,7 @@ export const delete_daterange = async (req: any, res: any) => {
   }
 }
 
-export const book_daterange = async (req: any, res: any) => {
+export const book_dateranges = async (req: any, res: any) => {
   try {
     const { dateId } = req.params
     const dateRange: any = await DateRange.findById(dateId)

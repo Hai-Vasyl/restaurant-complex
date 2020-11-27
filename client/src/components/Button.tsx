@@ -2,9 +2,7 @@ import React from "react"
 import "../styles/button.scss"
 
 interface IButtonProps {
-  click(
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void | undefined
+  click(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): any
   Icon: any
   title: string
   exClass?: string

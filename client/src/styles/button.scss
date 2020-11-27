@@ -34,3 +34,18 @@
     border-color: getColor(accent);
   }
 }
+
+.btn-disabled {
+  box-shadow: none;
+  border: none;
+  background-color: getColor(main);
+  background-image: none;
+  color: getColor(font);
+  cursor: default;
+  &:hover {
+    opacity: 1;
+  }
+  &:active {
+    transform: none;
+  }
+}
