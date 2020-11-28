@@ -1,5 +1,16 @@
 @import "base";
 
+@keyframes scale {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .response {
   display: flex;
   align-items: flex-start;
@@ -9,6 +20,7 @@
   max-width: 100%;
   background-color: getColor(font-white);
   padding: 10px 15px 10px 0;
+  animation: scale getTransition(main);
   &__img-link {
     width: 70px;
     height: 70px;
@@ -57,6 +69,27 @@
   &__content-text {
     border-top: 1px solid getColor(main);
     padding: 5px;
+  }
+  &__form-input {
+    border: 1px solid getColor(secondary);
+    padding: 10px;
+    margin: 15px 0;
+    width: 650px;
+    max-width: 100%;
+    border-radius: getRadius(main);
+    transition: getTransition(main);
+    &:focus {
+      border-color: getColor(accent);
+    }
+  }
+}
+
+.form-response {
+  width: 100%;
+  padding: 15px;
+  padding-left: 0;
+  .response__content-text {
+    padding: 0;
   }
 }
 
@@ -115,20 +148,33 @@
     @extend %flex-center;
     padding: 3px 10px;
     font-size: 0.9em;
-    background-color: getColor(main);
-    border: 1px solid transparent;
+    color: getColor(font-white);
+    background-image: getGradient(main);
     transition: getTransition(main);
+    box-shadow: getShadow(secondary);
     &:hover {
-      border-color: getColor(accent);
+      box-shadow: none;
     }
     &:active {
       transform: scale(0.9);
       opacity: 0.5;
     }
+    &--disabled {
+      box-shadow: none;
+      background-color: getColor(main);
+      background-image: none;
+      color: getColor(font);
+      cursor: default;
+      &:hover {
+        opacity: 1;
+        border-color: transparent;
+      }
+      &:active {
+        transform: none;
+      }
+    }
   }
   &__btn-icon {
     margin-right: 5px;
-  }
-  &__btn-title {
   }
 }
