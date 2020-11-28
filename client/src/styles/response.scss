@@ -1,0 +1,134 @@
+@import "base";
+
+.response {
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 1px solid getColor(secondary);
+  margin-bottom: 20px;
+  width: 900px;
+  max-width: 100%;
+  background-color: getColor(font-white);
+  padding: 10px 15px 10px 0;
+  &__img-link {
+    width: 70px;
+    height: 70px;
+    display: block;
+    position: relative;
+    margin: 15px;
+    color: getColor(font);
+    padding: 5px;
+    background-color: getColor(font-white);
+    border: 1px solid getColor(secondary);
+    border-radius: 50%;
+    &:hover {
+      .response__user-ava {
+        transform: scale(1.15);
+      }
+    }
+  }
+  &__user-ava {
+    @extend %image;
+    transition: getTransition(main);
+  }
+  &__icon-type {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 1px solid getColor(accent);
+    font-size: 1.4em;
+    border-radius: 50%;
+    padding: 3px;
+    background-color: getColor(main);
+  }
+  &__content {
+    flex: 1;
+  }
+  &__title {
+    @extend %flex-center;
+    justify-content: space-between;
+  }
+  &__text-link {
+    text-decoration: none;
+    color: getColor(accent);
+  }
+  &__date {
+    font-size: 0.8em;
+  }
+  &__content-text {
+    border-top: 1px solid getColor(main);
+    padding: 5px;
+  }
+}
+
+.reply {
+  display: flex;
+  &__btn-toggle {
+    transition: getTransition(main);
+    @extend %flex-center;
+    padding: 3px 10px;
+    font-size: 0.9em;
+    background-color: getColor(main);
+    border: 1px solid transparent;
+    & > * {
+      margin: auto;
+    }
+    &-close {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+    }
+    &:hover {
+      border-color: getColor(accent);
+    }
+    &:active {
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
+  }
+  &__toggle-icon {
+    margin-right: 5px;
+  }
+  &__form {
+    display: flex;
+    flex: 1;
+    transition: getTransition(main);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.5);
+    &--open {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+  }
+  &__input {
+    flex: 1;
+    border: 1px solid getColor(main);
+    font-size: 0.9em;
+    padding: 3px;
+    transition: getTransition(main);
+    &:focus {
+      border-color: getColor(accent);
+    }
+  }
+  &__btn-submit {
+    @extend %flex-center;
+    padding: 3px 10px;
+    font-size: 0.9em;
+    background-color: getColor(main);
+    border: 1px solid transparent;
+    transition: getTransition(main);
+    &:hover {
+      border-color: getColor(accent);
+    }
+    &:active {
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
+  }
+  &__btn-icon {
+    margin-right: 5px;
+  }
+  &__btn-title {
+  }
+}

@@ -1,0 +1,13 @@
+@import "base";
+
+.responses-container {
+}
+
+.response-wrapper {
+  border-left: 1px solid getColor(secondary);
+}
+
+.answer-wrapper {
+  margin-left: 50px;
+  border-left: 1px solid getColor(secondary);
+}

@@ -19,3 +19,26 @@ export const create_response = async (req: any, res: any) => {
     res.status(400).json(`Creating response error: ${error.message}`)
   }
 }
+
+export const get_responses = async (req: any, res: any) => {
+  try {
+    const { hrComplex } = req.body
+    const responses = await Response.find({
+      hrComplex,
+      response: null,
+    }).populate({ path: "owner", select: "username ava role" })
+
+    let responsesCopy: any = [...responses]
+    for (let i = 0; i < responsesCopy.length; i++) {
+      const answers = await Response.find({
+        response: responsesCopy[i]._id,
+      }).populate({ path: "owner", select: "username ava role" })
+
+      responsesCopy[i] = { ...responsesCopy[i]._doc, answers }
+    }
+
+    res.json(responsesCopy)
+  } catch (error) {
+    res.status(400).json(`Getting responses error: ${error.message}`)
+  }
+}

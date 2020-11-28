@@ -36,3 +36,21 @@ export interface IOrder {
   eviction: string
   date: string
 }
+
+export interface IResponseBase {
+  _id: string
+  hrComplex: string
+  owner: {
+    _id: string
+    ava: string
+    role: string
+    username: string
+  }
+  content: string
+  date: string
+  response?: string
+}
+
+export interface IResponse extends IResponseBase {
+  answers: IResponseBase[]
+}
