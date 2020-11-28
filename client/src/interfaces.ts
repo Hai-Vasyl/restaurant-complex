@@ -27,3 +27,12 @@ export interface IDateRange {
   price: string
   chosen?: boolean
 }
+
+export interface IOrder {
+  buyer: string
+  hrComplex: string
+  price: string
+  settlement: string
+  eviction: string
+  date: string
+}

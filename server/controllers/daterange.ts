@@ -82,3 +82,14 @@ export const book_dateranges = async (req: any, res: any) => {
     res.status(400).json(`Booking DateRange error: ${error.message}`)
   }
 }
+
+export const ordered_dateranges = async (req: any, res: any) => {
+  try {
+    const { userId } = req
+    const orders = await Order.find({ buyer: userId })
+
+    res.json(orders)
+  } catch (error) {
+    res.status(400).json(`Getting ordered DateRange error: ${error.message}`)
+  }
+}

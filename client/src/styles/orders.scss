@@ -1,0 +1,54 @@
+@import "base";
+
+.orders {
+  width: 850px;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.order {
+  display: flex;
+  border-bottom: 1px solid getColor(secondary);
+  padding: 20px;
+  margin-bottom: 1em;
+  background-color: getColor(font-white);
+  &__logotype {
+    font-size: 5em;
+  }
+  &__wrapper {
+    margin-left: 20px;
+    flex: 1;
+  }
+  &__date-range {
+    @extend %flex-center;
+    border: 1px solid getColor(secondary);
+    justify-content: space-between;
+  }
+  &__date {
+    background-color: getColor(main);
+    padding: 4px 10px;
+    & > :last-child {
+      color: getColor(accent);
+      margin-left: 10px;
+    }
+  }
+  &__info {
+    margin-top: 15px;
+    @extend %flex-center;
+    justify-content: space-between;
+  }
+  &__price {
+    @extend %flex-center;
+    & > :last-child {
+      font-weight: bold;
+      margin: 0 5px 0 10px;
+    }
+  }
+  &__created {
+    @extend %flex-center;
+    font-size: 0.9em;
+    & > :last-child {
+      margin-left: 10px;
+    }
+  }
+}

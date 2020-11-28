@@ -13,8 +13,8 @@ import {
   BsKanban,
   BsPlus,
   BsChatSquareQuote,
+  BsCardChecklist,
 } from "react-icons/bs"
-import { FiShoppingCart } from "react-icons/fi"
 
 export interface IRoute {
   component: React.FC
@@ -78,8 +78,8 @@ export const getLinks = (userId: string, username: string): ILink[] => {
     },
     {
       to: "/orders",
-      Icon: FiShoppingCart,
-      title: "Замовлення",
+      Icon: BsCardChecklist,
+      title: "Замовлено",
       className: "link",
       activeClassName: "link--active",
     },
