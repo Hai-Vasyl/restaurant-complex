@@ -21,6 +21,28 @@
   background-color: getColor(font-white);
   padding: 10px 15px 10px 0;
   animation: scale getTransition(main);
+  position: relative;
+  &__btn-remove {
+    @extend %flex-center;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    background-color: getColor(main);
+    top: -5px;
+    left: -5px;
+    border: 1px solid getColor(secondary);
+    transition: getTransition(main);
+    & > * {
+      margin: auto;
+    }
+    &:hover {
+      border-color: getColor(accent);
+    }
+    &:active {
+      opacity: 0.5;
+      transform: scale(0.9);
+    }
+  }
   &__img-link {
     width: 70px;
     height: 70px;

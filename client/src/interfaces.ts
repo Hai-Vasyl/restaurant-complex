@@ -54,3 +54,18 @@ export interface IResponseBase {
 export interface IResponse extends IResponseBase {
   answers: IResponseBase[]
 }
+
+export interface IUser {
+  ava: string
+  bio: string
+  birth: string
+  date: string
+  email: string
+  firstname: string
+  lastname: string
+  password: string
+  phone: string
+  role: string
+  username: string
+  _id: string
+}

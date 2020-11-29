@@ -46,3 +46,16 @@ export const get_responses = async (req: any, res: any) => {
     res.status(400).json(`Getting responses error: ${error.message}`)
   }
 }
+
+export const delete_response = async (req: any, res: any) => {
+  try {
+    const { responseId } = req.params
+    const { userId } = req
+
+    await Response.findOneAndDelete({ _id: responseId, owner: userId })
+
+    res.json({ message: "Response deleted successfully!" })
+  } catch (error) {
+    res.status(400).json(`Deleting response error: ${error.message}`)
+  }
+}

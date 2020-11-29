@@ -18,7 +18,7 @@ const Responses: React.FC = () => {
   const [responses, setResponses] = useState<IResponse[]>([])
   const [initLoading, setInitLoading] = useState(true)
   const {
-    auth: { user },
+    auth: { user, token },
   } = useSelector((state: RootStore) => state)
   const [respose, setResponse] = useState("")
   const { createResponse } = useCreateResponse()
@@ -72,6 +72,28 @@ const Responses: React.FC = () => {
     } catch (error) {}
   }
 
+  const handleDeleteResponse = async (id: string) => {
+    try {
+      await axios({
+        url: `${http}/response/delete/${id}`,
+        method: "delete",
+        headers: token && {
+          Authorization: `Basic ${token}`,
+        },
+      })
+
+      let responsesCopy = [...responses]
+      responsesCopy = responsesCopy.filter((res) => res._id !== id)
+      responsesCopy = responsesCopy.map((res) => {
+        return {
+          ...res,
+          answers: res.answers.filter((answer) => answer._id !== id),
+        }
+      })
+      setResponses(responsesCopy)
+    } catch (error) {}
+  }
+
   if (initLoading) {
     return <div className='wrapper'>LOADING ...</div>
   }
@@ -121,11 +143,21 @@ const Responses: React.FC = () => {
         {responses.map((response) => {
           return (
             <div key={response._id} className='response-wrapper'>
-              <Response response={response} setNewAnswer={setNewAnswer} />
+              <Response
+                response={response}
+                onDeleteResponse={handleDeleteResponse}
+                setNewAnswer={setNewAnswer}
+              />
               <div className='answer-wrapper'>
                 {response.answers &&
                   response.answers.map((answer) => {
-                    return <Response key={answer._id} response={answer} />
+                    return (
+                      <Response
+                        key={answer._id}
+                        onDeleteResponse={handleDeleteResponse}
+                        response={answer}
+                      />
+                    )
                   })}
               </div>
             </div>

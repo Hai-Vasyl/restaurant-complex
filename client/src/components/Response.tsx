@@ -3,20 +3,30 @@ import { IResponseBase } from "../interfaces"
 import { Link } from "react-router-dom"
 import { RiUserSettingsLine, RiQuestionAnswerLine } from "react-icons/ri"
 import { BsX, BsCheck } from "react-icons/bs"
+import { useSelector } from "react-redux"
 import useCreateResponse from "../hooks/useCreateResponse"
 import moment from "moment"
+import { RootStore } from "../redux/store"
 import "../styles/response.scss"
 
 interface IResponseProps {
   response: IResponseBase
   setNewAnswer?(answer: IResponseBase): void
+  onDeleteResponse(id: string): void
 }
 
-const Response: React.FC<IResponseProps> = ({ response, setNewAnswer }) => {
+const Response: React.FC<IResponseProps> = ({
+  response,
+  setNewAnswer,
+  onDeleteResponse,
+}) => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
   const [replyActive, setReplyActive] = useState(false)
   const [answer, setAnswer] = useState("")
   const { createResponse } = useCreateResponse()
+  const {
+    auth: { user },
+  } = useSelector((state: RootStore) => state)
 
   const handleChangeReply = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value)
@@ -38,6 +48,13 @@ const Response: React.FC<IResponseProps> = ({ response, setNewAnswer }) => {
 
   return (
     <div className='response'>
+      {response.owner._id === user._id && (
+        <button
+          className='response__btn-remove'
+          onClick={() => onDeleteResponse(response._id)}>
+          <BsX />
+        </button>
+      )}
       <Link className='response__img-link' to={`/user/${response.owner._id}`}>
         <img
           className='response__user-ava'

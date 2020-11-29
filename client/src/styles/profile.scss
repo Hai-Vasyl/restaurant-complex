@@ -1,0 +1,155 @@
+@import "base";
+
+.user-info {
+  display: flex;
+  &__preview {
+    padding: 15px;
+    border-right: 1px solid getColor(secondary);
+  }
+  &__btn-change-img {
+    border-radius: 50%;
+    border: 1px solid getColor(secondary);
+    background-color: getColor(font-white);
+  }
+  &__btn-change {
+    cursor: pointer;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    display: block;
+    position: relative;
+    padding: 10px;
+  }
+  &__icon-type {
+    position: absolute;
+    font-size: 3em;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid getColor(secondary);
+    background-color: getColor(font-white);
+    @extend %flex-center;
+    color: getColor(accent);
+    & > * {
+      margin: auto;
+    }
+  }
+  &__ava {
+    @extend %image;
+    border-radius: 50%;
+  }
+  &__btn-file {
+    display: none;
+  }
+}
+
+.user-info-wrapper {
+  position: relative;
+  flex: 1;
+  background-color: getColor(font-white);
+}
+
+.user-tabs {
+  display: flex;
+  background-color: getColor(main);
+  border-bottom: 1px solid getColor(secondary);
+  &__tab {
+    @extend %flex-center;
+    padding: 10px 15px;
+    border: 1px solid getColor(secondary);
+    border-left-color: transparent;
+    // border-top-color: transparent;
+    background-color: getColor(main);
+    transform: translateY(1px);
+    transition: getTransition(main);
+    &:hover {
+      .user-tabs__icon {
+        color: getColor(accent);
+      }
+    }
+    &:active {
+      opacity: 0.2;
+    }
+    &--active {
+      background-color: getColor(font-white);
+      border-bottom-color: getColor(font-white);
+      &:hover {
+        .user-tabs__icon {
+          color: getColor(font);
+        }
+      }
+      &:active {
+        opacity: 1;
+      }
+    }
+  }
+  &__icon {
+    margin-right: 7px;
+    font-size: 1.1em;
+    transition: getTransition(main);
+  }
+  &__title {
+    font-size: 0.9em;
+  }
+}
+
+.user {
+  padding: 20px;
+  &--close {
+    display: none;
+  }
+  &__username {
+    font-weight: bold;
+    font-size: 2em;
+    border-bottom: 1px solid getColor(main);
+    margin-bottom: 5px;
+  }
+}
+
+.section-user {
+  padding: 5px 0;
+  font-size: 1.1em;
+  &__text {
+    font-weight: bold;
+  }
+  &__plug {
+    color: getColor(secondary);
+  }
+  &__date {
+    border-top: 1px solid getColor(main);
+    margin-top: 5px;
+    padding: 5px 0;
+    .section__text {
+    }
+  }
+}
+
+.user-form {
+  padding: 20px;
+  &--close {
+    display: none;
+  }
+  &__fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
+    grid-column-gap: 15px;
+  }
+  &__btns {
+    @extend %flex-center;
+    align-items: stretch;
+    justify-content: flex-start;
+    & > :last-child {
+      margin-left: 10px;
+    }
+  }
+}
+
+.field__date-birth {
+  .field__input {
+    height: 38px;
+  }
+}
