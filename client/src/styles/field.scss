@@ -9,6 +9,10 @@
   &__title {
     display: block;
     padding: 3px 0;
+    &--important::after() {
+      content: "*";
+      color: getColor(danger);
+    }
   }
   &__input {
     width: 100%;

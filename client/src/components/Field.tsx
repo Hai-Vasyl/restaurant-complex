@@ -11,6 +11,7 @@ interface IFieldProps {
     value: string
     title?: string
     msg?: string
+    important?: boolean
   }
   change: (event: React.ChangeEvent<HTMLInputElement>) => void | undefined
   exClass?: string
@@ -24,7 +25,14 @@ const Field: React.FC<IFieldProps> = ({
 }) => {
   return (
     <label className={`field ${exClass}`} key={field.param}>
-      {field.title && <span className='field__title'>{field.title}</span>}
+      {field.title && (
+        <span
+          className={`field__title ${
+            field.important && "field__title--important"
+          }`}>
+          {field.title}
+        </span>
+      )}
       <input
         className={`field__input ${field.msg?.length && "field__input--error"}`}
         type={field.type}

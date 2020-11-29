@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 import axios from "axios"
 import { IUser } from "../interfaces"
 import { http } from "../http"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import { RiUserSettingsLine } from "react-icons/ri"
 import moment from "moment"
 import Field from "../components/Field"
 import Button from "../components/Button"
 import { BsCheck, BsX, BsInfoCircle, BsGear } from "react-icons/bs"
+import { IAuthError, UPDATE_AUTH, LOGOUT_AUTH } from "../redux/types/auth"
+import { AiOutlineLogout } from "react-icons/ai"
 import "../styles/profile.scss"
 
 const Profile: React.FC = () => {
+  const history = useHistory()
   const {
     auth: { user, token },
   } = useSelector((state: RootStore) => state)
+  const dispatch = useDispatch()
   const { userId }: { userId: string } = useParams()
   const isAuthProfile = token && user._id === userId
   const [userData, setUserData] = useState<IUser>(
@@ -85,13 +89,13 @@ const Profile: React.FC = () => {
     {
       param: "password",
       value: "",
-      title: "Пароль",
+      title: "Новий пароль",
       msg: "",
       type: "password",
-      important: true,
     },
   ])
   const [flipToForm, setFlipToForm] = useState(false)
+  const [changed, setChanged] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,21 +126,103 @@ const Profile: React.FC = () => {
         return field
       })
     )
+    setChanged(true)
   }
 
-  const handleApplyForm = (
+  const handleApplyForm = async (
     event:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     try {
       event.preventDefault()
-      console.log("Apply form")
-    } catch (error) {}
+
+      const [
+        username,
+        email,
+        firstname,
+        lastname,
+        phone,
+        bio,
+        birth,
+        password,
+      ] = form
+
+      const res = await axios({
+        url: `${http}/auth/${
+          password.value.length ? "update-user-password" : "update-user"
+        }`,
+        method: "post",
+        data: {
+          username: username.value,
+          email: email.value,
+          firstname: firstname.value,
+          lastname: lastname.value,
+          phone: phone.value,
+          bio: bio.value,
+          birth: birth.value,
+          password: password.value.length ? password.value : undefined,
+        },
+        headers: token && {
+          Authorization: `Basic ${token}`,
+        },
+      })
+
+      setUserData(res.data)
+      dispatch({ type: UPDATE_AUTH, payload: res.data })
+      setChanged(false)
+    } catch (error) {
+      const errors = error.response.data.errors || []
+      setForm((prevForm) =>
+        prevForm.map((field) => {
+          let errorMsg = ""
+          errors.forEach((err: IAuthError) => {
+            if (err.param === field.param) {
+              errorMsg = err.msg
+            }
+          })
+          return { ...field, msg: errorMsg }
+        })
+      )
+    }
   }
 
   const handleResetFrom = () => {
-    console.log("Reset form")
+    setForm((prevForm) =>
+      prevForm.map((field) => {
+        let finalField = field
+        Object.keys(user).map((keyField) => {
+          if (field.param === keyField) {
+            finalField = {
+              ...field,
+              value:
+                keyField === "birth" && !user[keyField]
+                  ? ""
+                  : keyField === "password"
+                  ? ""
+                  : user[keyField],
+            }
+          }
+        })
+        return { ...finalField, msg: "" }
+      })
+    )
+    setChanged(false)
+  }
+
+  const handleLogOut = () => {
+    dispatch({ type: LOGOUT_AUTH })
+    history.push("/")
+  }
+
+  const checkFieldsEmpty = () => {
+    let isEmptyField = false
+    form.forEach((field) => {
+      if (field.important && !field.value.trim().length) {
+        isEmptyField = true
+      }
+    })
+    return isEmptyField
   }
 
   const fields = form.map((field) => {
@@ -150,7 +236,7 @@ const Profile: React.FC = () => {
     )
   })
 
-  console.log(userData)
+  const isEmptyField = checkFieldsEmpty()
   return (
     <div className='wrapper'>
       <div className='user-info'>
@@ -167,6 +253,12 @@ const Profile: React.FC = () => {
               <input type='file' className='user-info__btn-file' />
             </label>
           </div>
+          <Button
+            exClass='btn-simple btn-logout'
+            Icon={AiOutlineLogout}
+            click={handleLogOut}
+            title='Вийти'
+          />
         </div>
         <div className='user-info-wrapper'>
           <div className='user-tabs'>
@@ -243,20 +335,30 @@ const Profile: React.FC = () => {
             </div>
           </div>
           <div className={`user-form ${!flipToForm && "user-form--close"}`}>
-            <form onSubmit={handleApplyForm} className='user-form__fields'>
+            <form
+              onSubmit={
+                !changed || isEmptyField
+                  ? (event) => {
+                      event.preventDefault()
+                    }
+                  : handleApplyForm
+              }
+              className='user-form__fields'>
               {fields}
               <button className='btn-handler'></button>
             </form>
             <div className='user-form__btns'>
               <Button
-                exClass='btn-primary'
-                click={handleApplyForm}
+                exClass={`btn-primary ${!changed && "btn-disabled"} ${
+                  isEmptyField && "btn-disabled"
+                }`}
+                click={!changed || isEmptyField ? () => {} : handleApplyForm}
                 title='Застосувати'
                 Icon={BsCheck}
               />
               <Button
-                exClass='btn-simple'
-                click={handleResetFrom}
+                exClass={`btn-simple ${!changed && "btn-disabled"}`}
+                click={!changed ? () => {} : handleResetFrom}
                 title='Скасувати'
                 Icon={BsX}
               />

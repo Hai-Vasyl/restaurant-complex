@@ -5,6 +5,8 @@ import {
   RESET_ERRORS_AUTH,
   RESET_ERROR_AUTH,
   SET_AUTH,
+  UPDATE_AUTH,
+  LOGOUT_AUTH,
   IAuthSuccess,
   IAuthError,
   ActionsDispatch,
@@ -15,23 +17,25 @@ interface IInitState extends IAuthSuccess {
   errors: IAuthError[]
 }
 
+const initUser = {
+  ava: "",
+  firstname: "",
+  lastname: "",
+  phone: "",
+  bio: "",
+  birth: "",
+  role: "",
+  _id: "",
+  username: "",
+  email: "",
+  password: "",
+  date: "",
+}
+
 const initState: IInitState = {
   loading: false,
   errors: [],
-  user: {
-    ava: "",
-    firstname: "",
-    lastname: "",
-    phone: "",
-    bio: "",
-    birth: "",
-    role: "",
-    _id: "",
-    username: "",
-    email: "",
-    password: "",
-    date: "",
-  },
+  user: initUser,
   token: "",
 }
 
@@ -69,6 +73,24 @@ const authReducer = (state = initState, action: ActionsDispatch) => {
         }
       }
       return state
+    case UPDATE_AUTH:
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({ token: state.token, user: action.payload })
+      )
+      return {
+        ...state,
+        user: action.payload,
+      }
+    case LOGOUT_AUTH:
+      localStorage.removeItem("auth")
+      return {
+        ...state,
+        user: initUser,
+        token: "",
+        loading: false,
+        errors: [],
+      }
     case RESET_ERRORS_AUTH:
       return {
         ...state,

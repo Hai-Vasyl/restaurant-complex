@@ -4,6 +4,8 @@ export const FETCH_ERROR_AUTH = "FETCH_ERROR_AUTH"
 export const RESET_ERRORS_AUTH = "RESET_ERRORS_AUTH"
 export const RESET_ERROR_AUTH = "RESET_ERROR_AUTH"
 export const SET_AUTH = "SET_AUTH"
+export const UPDATE_AUTH = "UPDATE_AUTH"
+export const LOGOUT_AUTH = "LOGOUT_AUTH"
 
 export interface IUser {
   ava: string
@@ -59,6 +61,15 @@ export interface setAuth {
   type: typeof SET_AUTH
 }
 
+export interface updateAuth {
+  type: typeof UPDATE_AUTH
+  payload: IUser
+}
+
+export interface logoutAuth {
+  type: typeof LOGOUT_AUTH
+}
+
 export type FetchActionsDispatch =
   | fetchStartAuth
   | fetchSuccessAuth
@@ -68,3 +79,5 @@ export type ActionsDispatch =
   | resetErrorsAuth
   | resetErrorAuth
   | setAuth
+  | updateAuth
+  | logoutAuth

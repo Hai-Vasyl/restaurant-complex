@@ -142,6 +142,7 @@
     @extend %flex-center;
     align-items: stretch;
     justify-content: flex-start;
+    padding-top: 15px;
     & > :last-child {
       margin-left: 10px;
     }
@@ -152,4 +153,9 @@
   .field__input {
     height: 38px;
   }
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 10px 15px;
 }

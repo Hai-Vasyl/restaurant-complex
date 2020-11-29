@@ -7,6 +7,50 @@ config()
 
 const { JWT_SECRET }: any = process.env
 
+const checkUniqueCred = async (
+  username: string,
+  email: string,
+  userId?: string,
+  updatingUser: boolean = false
+) => {
+  const queryUsername = updatingUser
+    ? { _id: { $ne: userId }, username }
+    : { username }
+  const queryEmail = updatingUser ? { _id: { $ne: userId }, email } : { email }
+
+  const userByUsername = await User.findOne(queryUsername)
+  const userByemail = await User.findOne(queryEmail)
+  const isUserByUsername =
+    userByUsername && Object.values(userByUsername).length
+  const isUserByEmail = userByemail && Object.values(userByemail).length
+  if (isUserByUsername && isUserByEmail) {
+    return {
+      errors: [
+        { msg: "Ім'я користувача не унікальне!", param: "username" },
+        { msg: "Електронна пошта не є унікальною!", param: "email" },
+      ],
+    }
+  } else if (isUserByUsername) {
+    return {
+      errors: [
+        {
+          msg: "Користувач з цим іменем користувача вже існує!",
+          param: "username",
+        },
+      ],
+    }
+  } else if (isUserByEmail) {
+    return {
+      errors: [
+        {
+          msg: "Користувач з цією електронною поштою вже існує!",
+          param: "email",
+        },
+      ],
+    }
+  }
+}
+
 export const register_user = async (req: any, res: any) => {
   try {
     const errors = validationResult(req)
@@ -16,37 +60,41 @@ export const register_user = async (req: any, res: any) => {
 
     const { username, email, password, role, ava } = req.body
 
-    const userByUsername = await User.findOne({ username })
-    const userByemail = await User.findOne({ email })
-    const isUserByUsername =
-      userByUsername && Object.values(userByUsername).length
-    const isUserByEmail = userByemail && Object.values(userByemail).length
-    if (isUserByUsername && isUserByEmail) {
-      return res.status(400).json({
-        errors: [
-          { msg: "Ім'я користувача не унікальне!", param: "username" },
-          { msg: "Електронна пошта не є унікальною!", param: "email" },
-        ],
-      })
-    } else if (isUserByUsername) {
-      return res.status(400).json({
-        errors: [
-          {
-            msg: "Користувач з цим іменем користувача вже існує!",
-            param: "username",
-          },
-        ],
-      })
-    } else if (isUserByEmail) {
-      return res.status(400).json({
-        errors: [
-          {
-            msg: "Користувач з цією електронною поштою вже існує!",
-            param: "email",
-          },
-        ],
-      })
+    const errorMsgs: any = await checkUniqueCred(username, email)
+    if (errorMsgs.errors && errorMsgs.errors.length) {
+      res.staus(400).json(errorMsgs)
     }
+    // const userByUsername = await User.findOne({ username })
+    // const userByemail = await User.findOne({ email })
+    // const isUserByUsername =
+    //   userByUsername && Object.values(userByUsername).length
+    // const isUserByEmail = userByemail && Object.values(userByemail).length
+    // if (isUserByUsername && isUserByEmail) {
+    //   return res.status(400).json({
+    //     errors: [
+    //       { msg: "Ім'я користувача не унікальне!", param: "username" },
+    //       { msg: "Електронна пошта не є унікальною!", param: "email" },
+    //     ],
+    //   })
+    // } else if (isUserByUsername) {
+    //   return res.status(400).json({
+    //     errors: [
+    //       {
+    //         msg: "Користувач з цим іменем користувача вже існує!",
+    //         param: "username",
+    //       },
+    //     ],
+    //   })
+    // } else if (isUserByEmail) {
+    //   return res.status(400).json({
+    //     errors: [
+    //       {
+    //         msg: "Користувач з цією електронною поштою вже існує!",
+    //         param: "email",
+    //       },
+    //     ],
+    //   })
+    // }
 
     const hashedPassword = await bcrypt.hash(password, 12)
 
@@ -115,5 +163,54 @@ export const get_user = async (req: any, res: any) => {
     res.json(user)
   } catch (error) {
     res.status(400).json(`Getting user info error: ${error.message}`)
+  }
+}
+
+export const update_user = async (req: any, res: any) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    const {
+      username,
+      email,
+      firstname,
+      lastname,
+      phone,
+      bio,
+      birth,
+      password,
+    } = req.body
+    const { userId } = req
+
+    const errorMsgs: any = await checkUniqueCred(username, email, userId, true)
+    if (errorMsgs && errorMsgs.errors && errorMsgs.errors.length) {
+      return res.status(400).json(errorMsgs)
+    }
+
+    let updateFields: any = {
+      username,
+      email,
+      firstname,
+      lastname,
+      phone,
+      bio,
+      birth,
+      date: new Date(),
+    }
+    if (password !== undefined) {
+      const newPassword = await bcrypt.hash(password, 12)
+      updateFields = { ...updateFields, password: newPassword }
+    }
+
+    await User.findByIdAndUpdate(userId, {
+      ...updateFields,
+    })
+    const updatedUser = await User.findById(userId)
+
+    res.json(updatedUser)
+  } catch (error) {
+    res.status(400).json(`Updating user info error: ${error.message}`)
   }
 }
