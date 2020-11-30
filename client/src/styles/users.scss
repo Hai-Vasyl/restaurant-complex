@@ -1,0 +1,79 @@
+@import "base";
+
+.users-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+  grid-gap: 1em;
+}
+
+.user-link {
+  background-color: getColor(font-white);
+  border-bottom: 1px solid getColor(secondary);
+  padding: 15px 0;
+  &__img-container {
+    display: block;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: getColor(font-white);
+    border: 1px solid getColor(secondary);
+    margin: 0 auto;
+    position: relative;
+    &:hover {
+      .user-link__img-ava {
+        transform: scale(1.1);
+      }
+    }
+  }
+  &__img-ava {
+    @extend %image;
+    border-radius: 50%;
+    transition: getTransition(main);
+    border: 1px solid getColor(secondary);
+  }
+  &__role {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid getColor(secondary);
+    border-radius: 50%;
+    padding: 7px;
+    background-color: getColor(font-white);
+    color: getColor(accent);
+    @extend %flex-center;
+    & > * {
+      margin: auto;
+    }
+  }
+  &__content {
+    border-top: 1px solid getColor(main);
+    margin-top: 15px;
+    padding: 0px 15px;
+  }
+  &__username {
+    text-decoration: none;
+    color: getColor(accent);
+    text-align: center;
+    font-size: 1.2em;
+    display: block;
+    padding-top: 5px;
+  }
+  &__email {
+    padding: 5px 0;
+  }
+  &__date {
+    border-top: 1px solid getColor(main);
+    font-size: 0.75em;
+    padding: 4px 0;
+  }
+  &__date-text {
+    font-weight: bold;
+  }
+  &__pointer {
+    color: getColor(secondary);
+  }
+}

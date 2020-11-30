@@ -6,6 +6,7 @@ import Profile from "../pages/Profile"
 import Orders from "../pages/Orders"
 import CreateDateRange from "../pages/CreateDateRange"
 import Responses from "../pages/Responses"
+import Users from "../pages/Users"
 import {
   BsHouse,
   BsInfoSquare,
@@ -14,6 +15,7 @@ import {
   BsPlus,
   BsChatSquareQuote,
   BsCardChecklist,
+  BsPeople,
 } from "react-icons/bs"
 
 export interface IRoute {
@@ -70,6 +72,13 @@ export const getLinks = (userId: string, username: string): ILink[] => {
       activeClassName: "link--active",
     },
     {
+      to: "/users",
+      Icon: BsPeople,
+      title: "Користувачі",
+      className: "link",
+      activeClassName: "link--active",
+    },
+    {
       to: "/responses",
       Icon: BsChatSquareQuote,
       title: "Відгуки",
@@ -97,6 +106,7 @@ const mainRoutes: IRoute[] = [
   { component: Home, path: "/", exact: true },
   { component: About, path: "/about" },
   { component: Gallery, path: "/gallery" },
+  { component: Users, path: "/users" },
   { component: Profile, path: "/user/:userId", exact: true },
   { component: Responses, path: "/responses" },
 ]

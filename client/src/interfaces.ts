@@ -69,3 +69,12 @@ export interface IUser {
   username: string
   _id: string
 }
+
+export interface IUserBrief {
+  _id: string
+  username: string
+  email: string
+  ava: string
+  role: string
+  date: string
+}

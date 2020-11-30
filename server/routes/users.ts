@@ -5,6 +5,7 @@ import {
   login_user,
   get_user,
   update_user,
+  get_users,
 } from "../controllers/users"
 import auth from "../middlewares/auth.middleware"
 const router = Router()
@@ -68,5 +69,7 @@ router.post(
   ],
   update_user
 )
+
+router.get("/users", get_users)
 
 export default router

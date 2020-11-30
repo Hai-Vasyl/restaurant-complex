@@ -1,14 +1,21 @@
 import React from "react"
 import "../styles/home.scss"
 import { GiMountaintop } from "react-icons/gi"
-// @ts-ignore
-import imageMain from "../images/undraw_nature_m5ll.svg"
 import Button from "../components/Button"
 import { useHistory } from "react-router-dom"
 import { BsKanban, BsChatSquareQuote } from "react-icons/bs"
+import { TOGGLE_FORM_AUTH } from "../redux/types/popup"
+import { useSelector, useDispatch } from "react-redux"
+import { RootStore } from "../redux/store"
+// @ts-ignore
+import imageMain from "../images/undraw_nature_m5ll.svg"
 
 const Home: React.FC = () => {
   const history = useHistory()
+  const {
+    auth: { token },
+  } = useSelector((state: RootStore) => state)
+  const dispatch = useDispatch()
   const handleLinkTo = (path: string) => {
     history.push(path)
   }
@@ -33,7 +40,11 @@ const Home: React.FC = () => {
               <Button
                 exClass={"btn-primary"}
                 Icon={BsKanban}
-                click={() => handleLinkTo("/booking")}
+                click={() =>
+                  token
+                    ? handleLinkTo("/booking")
+                    : dispatch({ type: TOGGLE_FORM_AUTH })
+                }
                 title='Бронюваня'
               />
               <Button

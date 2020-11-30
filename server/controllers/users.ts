@@ -183,3 +183,13 @@ export const update_user = async (req: any, res: any) => {
     res.status(400).json(`Updating user info error: ${error.message}`)
   }
 }
+
+export const get_users = async (req: any, res: any) => {
+  try {
+    const users = await User.find().select("username email ava role date")
+
+    res.json(users)
+  } catch (error) {
+    res.status(400).json(`Getting all users error: ${error.message}`)
+  }
+}

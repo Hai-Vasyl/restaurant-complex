@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom"
 import { GiMountaintop } from "react-icons/gi"
 import { AiOutlineLogin } from "react-icons/ai"
 import { TOGGLE_FORM_AUTH } from "../redux/types/popup"
+import { RESET_POPUP } from "../redux/types/popup"
 import "../styles/navbar.scss"
 
 const Navbar: React.FC = () => {
@@ -15,11 +16,15 @@ const Navbar: React.FC = () => {
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
 
+  const hadleResetPopup = () => {
+    dispatch({ type: RESET_POPUP })
+  }
+
   const links = getLinks(user._id, user.username)
   return (
     <div className='nav'>
       <div className='nav__menu'>
-        <NavLink exact to='/' className='logo-link'>
+        <NavLink exact to='/' className='logo-link' onClick={hadleResetPopup}>
           <GiMountaintop className='logo-link__logo' />
           <span className='logo-link__title'>Art-Village</span>
         </NavLink>
@@ -45,6 +50,7 @@ const Navbar: React.FC = () => {
               className={`${link.className} ${
                 isProfileLink && "link-extended"
               }`}
+              onClick={hadleResetPopup}
               activeClassName={link.activeClassName}
               to={link.to}>
               {isProfileLink ? (
