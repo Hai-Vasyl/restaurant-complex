@@ -25,7 +25,7 @@
   border-left: none;
   border-top-right-radius: getRadius(main);
   border-bottom-right-radius: getRadius(main);
-  transform: translate(-1px, -50%);
+  transform: translateY(-50%);
 }
 
 .btn-arrow-right {
@@ -33,5 +33,5 @@
   border-right: none;
   border-top-left-radius: getRadius(main);
   border-bottom-left-radius: getRadius(main);
-  transform: translate(1px, -50%);
+  transform: translateY(-50%);
 }

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react"
 import Title from "../components/Title"
 import { BsChatSquareQuote, BsReplyAll } from "react-icons/bs"
+import { AiOutlineLogin } from "react-icons/ai"
 import axios from "axios"
 import { http } from "../http"
 import { IResponse, IResponseBase } from "../interfaces"
 import Response from "../components/Response"
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 import { RiUserSettingsLine } from "react-icons/ri"
 import Button from "../components/Button"
 import useCreateResponse from "../hooks/useCreateResponse"
+import { TOGGLE_FORM_AUTH } from "../redux/types/popup"
+import { BiError } from "react-icons/bi"
 import "../styles/responses"
 
 const Responses: React.FC = () => {
@@ -20,6 +23,7 @@ const Responses: React.FC = () => {
   const {
     auth: { user, token },
   } = useSelector((state: RootStore) => state)
+  const dispatch = useDispatch()
   const [respose, setResponse] = useState("")
   const { createResponse } = useCreateResponse()
 
@@ -101,43 +105,64 @@ const Responses: React.FC = () => {
     <div className='wrapper'>
       <Title Icon={BsChatSquareQuote} title='Відгуки' />
       <div className='response form-response'>
-        <Link className='response__img-link' to={`/user/${user._id}`}>
-          <img className='response__user-ava' src={user.ava} alt='userAva' />
-          {user.role === "admin" && (
-            <RiUserSettingsLine className='response__icon-type' />
-          )}
-        </Link>
-        <div className='response__content'>
-          <div className='response__title'>
-            <Link className='response__text-link' to={`/user/${user._id}`}>
-              {user.username}
+        {token ? (
+          <>
+            <Link className='response__img-link' to={`/user/${user._id}`}>
+              <img
+                className='response__user-ava'
+                src={user.ava}
+                alt='userAva'
+              />
+              {user.role === "admin" && (
+                <RiUserSettingsLine className='response__icon-type' />
+              )}
             </Link>
-          </div>
-          <form
-            className='response__content-text'
-            onSubmit={
-              respose.trim().length
-                ? handleSubmitForm
-                : (event) => {
-                    event.preventDefault()
-                  }
-            }>
-            <input
-              className='response__form-input'
-              type='text'
-              value={respose}
-              onChange={handleChangeForm}
-            />
+            <div className='response__content'>
+              <div className='response__title'>
+                <Link className='response__text-link' to={`/user/${user._id}`}>
+                  {user.username}
+                </Link>
+              </div>
+              <form
+                className='response__content-text'
+                onSubmit={
+                  respose.trim().length
+                    ? handleSubmitForm
+                    : (event) => {
+                        event.preventDefault()
+                      }
+                }>
+                <input
+                  className='response__form-input'
+                  type='text'
+                  value={respose}
+                  onChange={handleChangeForm}
+                />
+                <Button
+                  exClass={`btn-primary btn-post ${
+                    !respose.trim().length && "btn-disabled"
+                  }`}
+                  Icon={BsReplyAll}
+                  title='Відправити'
+                  click={respose.trim().length ? handleSubmitForm : () => {}}
+                />
+              </form>
+            </div>
+          </>
+        ) : (
+          <div className='response-warning'>
+            <div className='response-warning__text'>
+              <BiError className='response-warning__icon' /> Будь-ласка спочатку
+              увійдіть щоб залишити відгук
+            </div>
             <Button
-              exClass={`btn-primary btn-post ${
-                !respose.trim().length && "btn-disabled"
-              }`}
-              Icon={BsReplyAll}
-              title='Відправити'
-              click={respose.trim().length ? handleSubmitForm : () => {}}
+              Icon={AiOutlineLogin}
+              exClass='btn-primary'
+              title='Увійти'
+              click={() => dispatch({ type: TOGGLE_FORM_AUTH })}
             />
-          </form>
-        </div>
+          </div>
+        )}
       </div>
       <div className='responses-container'>
         {responses.map((response) => {

@@ -253,31 +253,35 @@ const Profile: React.FC = () => {
               <input type='file' className='user-info__btn-file' />
             </label>
           </div>
-          <Button
-            exClass='btn-simple btn-logout'
-            Icon={AiOutlineLogout}
-            click={handleLogOut}
-            title='Вийти'
-          />
+          {isAuthProfile && (
+            <Button
+              exClass='btn-simple btn-logout'
+              Icon={AiOutlineLogout}
+              click={handleLogOut}
+              title='Вийти'
+            />
+          )}
         </div>
         <div className='user-info-wrapper'>
           <div className='user-tabs'>
             <button
-              onClick={() => setFlipToForm(false)}
+              onClick={() => (isAuthProfile ? setFlipToForm(false) : () => {})}
               className={`user-tabs__tab ${
                 !flipToForm && "user-tabs__tab--active"
               }`}>
               <BsInfoCircle className='user-tabs__icon' />
               <span className='user-tabs__title'>Інформація</span>
             </button>
-            <button
-              onClick={() => setFlipToForm(true)}
-              className={`user-tabs__tab ${
-                flipToForm && "user-tabs__tab--active"
-              }`}>
-              <BsGear className='user-tabs__icon' />
-              <span className='user-tabs__title'>Налаштування</span>
-            </button>
+            {isAuthProfile && (
+              <button
+                onClick={() => setFlipToForm(true)}
+                className={`user-tabs__tab ${
+                  flipToForm && "user-tabs__tab--active"
+                }`}>
+                <BsGear className='user-tabs__icon' />
+                <span className='user-tabs__title'>Налаштування</span>
+              </button>
+            )}
           </div>
           <div className={`user ${flipToForm && "user--close"}`}>
             <h3 className='user__username'>{userData.username}</h3>

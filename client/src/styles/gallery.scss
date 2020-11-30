@@ -9,9 +9,8 @@
 }
 
 .gallery-img {
-  border-radius: getRadius(main);
   padding: 10px;
-  border: 1px solid getColor(secondary);
+  border-bottom: 1px solid getColor(secondary);
   background-color: getColor(font-white);
   cursor: pointer;
   &__thumbnail {
@@ -25,7 +24,6 @@
   width: 1200px;
   max-width: 100%;
   padding: 0px 40px;
-
   z-index: 13;
   opacity: 0;
   visibility: hidden;
@@ -43,17 +41,20 @@
     height: 60vh;
     display: flex;
     margin: 0 auto;
-    background-color: getColor(main);
+
     box-shadow: getShadow(main);
   }
   &__preview {
     flex: 1;
+    backdrop-filter: blur(24px);
   }
   &__img {
     @extend %image;
+    object-fit: contain;
   }
   &__info {
     width: 380px;
+    background-color: getColor(main);
   }
   &__title {
     border-bottom: 1px solid getColor(secondary);

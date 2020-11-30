@@ -85,7 +85,6 @@ const Auth: React.FC = () => {
     event.preventDefault()
     try {
       const [username, email, password] = form
-
       const loginCred = { email: email.value, password: password.value }
       const registerCred = { ...loginCred, username: username.value }
 

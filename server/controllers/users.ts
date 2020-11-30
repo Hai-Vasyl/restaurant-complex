@@ -61,40 +61,9 @@ export const register_user = async (req: any, res: any) => {
     const { username, email, password, role, ava } = req.body
 
     const errorMsgs: any = await checkUniqueCred(username, email)
-    if (errorMsgs.errors && errorMsgs.errors.length) {
+    if (errorMsgs && errorMsgs.errors && errorMsgs.errors.length) {
       res.staus(400).json(errorMsgs)
     }
-    // const userByUsername = await User.findOne({ username })
-    // const userByemail = await User.findOne({ email })
-    // const isUserByUsername =
-    //   userByUsername && Object.values(userByUsername).length
-    // const isUserByEmail = userByemail && Object.values(userByemail).length
-    // if (isUserByUsername && isUserByEmail) {
-    //   return res.status(400).json({
-    //     errors: [
-    //       { msg: "Ім'я користувача не унікальне!", param: "username" },
-    //       { msg: "Електронна пошта не є унікальною!", param: "email" },
-    //     ],
-    //   })
-    // } else if (isUserByUsername) {
-    //   return res.status(400).json({
-    //     errors: [
-    //       {
-    //         msg: "Користувач з цим іменем користувача вже існує!",
-    //         param: "username",
-    //       },
-    //     ],
-    //   })
-    // } else if (isUserByEmail) {
-    //   return res.status(400).json({
-    //     errors: [
-    //       {
-    //         msg: "Користувач з цією електронною поштою вже існує!",
-    //         param: "email",
-    //       },
-    //     ],
-    //   })
-    // }
 
     const hashedPassword = await bcrypt.hash(password, 12)
 

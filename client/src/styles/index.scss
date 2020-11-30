@@ -47,6 +47,13 @@ button {
   }
 }
 
+.plug-text {
+  font-size: 1.2em;
+  color: getColor(secondary);
+  padding-top: 20px;
+  text-align: center;
+}
+
 .wrapper {
   width: 1240px;
   max-width: 100%;

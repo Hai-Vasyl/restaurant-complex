@@ -21,7 +21,7 @@ const Home: React.FC = () => {
           <div className='info__content'>
             <h1 className='logotype'>
               <GiMountaintop className='logotype__icon' />
-              <span className='logotype__title'>ART VILLAGE</span>
+              <span className='logotype__title'>Art-Village</span>
             </h1>
             <p className='info__paragraph'>
               Lorem ipsum dolor sit amet, consectetur

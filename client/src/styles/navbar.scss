@@ -26,6 +26,8 @@
   text-decoration: none;
   color: getColor(font-white);
   margin-right: auto;
+  font-family: $font-second;
+  font-weight: normal;
   &__logo {
     font-size: 2.5em;
   }
@@ -46,17 +48,28 @@
   & > :last-child {
     margin-left: 7px;
   }
+  &:hover {
+    border-top-color: getColor(secondary);
+  }
   &--active {
     border-top-color: getColor(accent);
     background-color: getColor(light-dark);
     .link__icon {
       color: getColor(accent);
     }
+    &:hover {
+      border-top-color: getColor(accent);
+    }
+  }
+  &:active {
+    opacity: 0.5;
   }
   &__img-wrapper {
     width: 34px;
     height: 34px;
     display: block;
+    border-radius: 50%;
+    overflow: hidden;
   }
   &__img {
     @extend %image;

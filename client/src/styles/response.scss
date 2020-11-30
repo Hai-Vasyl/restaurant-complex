@@ -63,6 +63,7 @@
   &__user-ava {
     @extend %image;
     transition: getTransition(main);
+    border-radius: 50%;
   }
   &__icon-type {
     position: absolute;
@@ -124,6 +125,7 @@
     font-size: 0.9em;
     background-color: getColor(main);
     border: 1px solid transparent;
+
     & > * {
       margin: auto;
     }
@@ -138,6 +140,17 @@
     &:active {
       transform: scale(0.9);
       opacity: 0.5;
+    }
+    &--disabled {
+      cursor: default;
+      color: getColor(secondary);
+      &:hover {
+        border-color: getColor(main);
+      }
+      &:active {
+        transform: none;
+        opacity: 1;
+      }
     }
   }
   &__toggle-icon {

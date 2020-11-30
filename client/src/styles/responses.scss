@@ -11,3 +11,18 @@
   margin-left: 50px;
   border-left: 1px solid getColor(secondary);
 }
+
+.response-warning {
+  padding: 0px 20px;
+  &__text {
+    font-size: 1.1em;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+  &__icon {
+    margin-right: 5px;
+    font-size: 1.3em;
+    color: getColor(secondary);
+  }
+}

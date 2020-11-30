@@ -4,8 +4,7 @@
   display: flex;
   height: 70vh;
   padding: 12px;
-  border: 1px solid getColor(secondary);
-  border-radius: getRadius(main);
+  border-bottom: 1px solid getColor(secondary);
   background-color: getColor(font-white);
   &__img-preview {
     @extend %image;
@@ -15,16 +14,13 @@
     width: 75%;
     position: relative;
     margin-right: 6px;
-    border-left: 1px solid getColor(secondary);
-    border-right: 1px solid getColor(secondary);
   }
   &__stack {
     width: 25%;
     margin-left: 6px;
     overflow-y: auto;
-    padding: 0px 5px;
-    box-shadow: getShadow(insetDeep);
-    border-radius: getRadius(main);
+    padding: 0px 7px;
+    background-color: getColor(main);
     &::-webkit-scrollbar {
       width: 0.6em;
       border-radius: getRadius(main);
@@ -33,8 +29,7 @@
       box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     }
     &::-webkit-scrollbar-thumb {
-      background-color: getColor(secondary);
-      outline: 2px solid getColor(accent);
+      background-color: getColor(accent);
       cursor: pointer;
     }
   }
@@ -44,14 +39,16 @@
   border: 1px solid transparent;
   transition: getTransition(main);
   border-radius: getRadius(main);
-  padding: 10px;
+  padding: 6px;
+  background-color: getColor(font-white);
+  margin: 10px 0;
   cursor: pointer;
   &__thumbnail {
     @extend %image;
   }
   &--active {
-    border-color: getColor(accent);
-    transform: scale(0.85);
+    border-bottom-color: getColor(accent);
+    transform: scale(0.9);
     box-shadow: getShadow(hightlight);
   }
 }
@@ -59,22 +56,43 @@
 .img-info {
   padding: 1em 0;
   &__title {
-    // font-family: "Kaushan Script", cursive;
     font-weight: normal;
     font-family: $font-second;
     font-size: 2em;
     border-bottom: 1px solid getColor(secondary);
   }
   &__paragraph {
-    border-bottom: 1px solid getColor(secondary);
+    // border-bottom: 1px solid getColor(secondary);
     padding: 1em;
   }
 }
 
 .section {
-  padding: 1em 0;
+  margin: 2em 0;
+  padding: 2em 0;
+  display: flex;
+  justify-content: center;
+  background-color: getColor(font-white);
+  border-bottom: 1px solid getColor(secondary);
+  &:nth-child(odd) {
+    flex-direction: row-reverse;
+  }
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  &__left-side {
+    width: 35%;
+    padding: 20px;
+  }
+  &__right-side {
+    width: 50%;
+    padding: 30px;
+    border: 1px solid getColor(main);
+  }
   &__title {
-    font-family: "Pacifico", cursive;
+    font-family: $font-second;
     font-size: 2em;
     font-weight: normal;
     border-bottom: 1px solid getColor(secondary);

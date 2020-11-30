@@ -41,32 +41,36 @@ const Orders: React.FC = () => {
     <div className='wrapper'>
       <Title Icon={BsCardChecklist} title='Замовлено' />
       <div className='orders'>
-        {orders.map((item) => {
-          return (
-            <div className='order' key={item.settlement}>
-              <GiMountaintop className='order__logotype' />
-              <div className='order__wrapper'>
-                <div className='order__date-range'>
-                  <span className='order__date'>
-                    Поселення: <span>{item.settlement.slice(0, 10)}</span>
-                  </span>
-                  <BsArrowRight />
-                  <span className='order__date'>
-                    Виселення: <span>{item.eviction.slice(0, 10)}</span>
-                  </span>
-                </div>
-                <div className='order__info'>
-                  <div className='order__price'>
-                    Ціна: <span>{item.price}</span> &#8372;
+        {orders.length ? (
+          orders.map((item) => {
+            return (
+              <div className='order' key={item.settlement}>
+                <GiMountaintop className='order__logotype' />
+                <div className='order__wrapper'>
+                  <div className='order__date-range'>
+                    <span className='order__date'>
+                      Поселення: <span>{item.settlement.slice(0, 10)}</span>
+                    </span>
+                    <BsArrowRight />
+                    <span className='order__date'>
+                      Виселення: <span>{item.eviction.slice(0, 10)}</span>
+                    </span>
                   </div>
-                  <div className='order__created'>
-                    Замовлено: <span>{item.date.slice(0, 10)}</span>
+                  <div className='order__info'>
+                    <div className='order__price'>
+                      Ціна: <span>{item.price}</span> &#8372;
+                    </div>
+                    <div className='order__created'>
+                      Замовлено: <span>{item.date.slice(0, 10)}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })
+        ) : (
+          <div className='plug-text'>Пусто</div>
+        )}
       </div>
     </div>
   )

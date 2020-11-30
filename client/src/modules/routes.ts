@@ -96,7 +96,6 @@ export const getLinks = (userId: string, username: string): ILink[] => {
 const mainRoutes: IRoute[] = [
   { component: Home, path: "/", exact: true },
   { component: About, path: "/about" },
-  { component: Booking, path: "/booking" },
   { component: Gallery, path: "/gallery" },
   { component: Profile, path: "/user/:userId", exact: true },
   { component: Responses, path: "/responses" },
@@ -107,8 +106,13 @@ const routes = {
     ...mainRoutes,
     { component: Orders, path: "/orders" },
     { component: CreateDateRange, path: "/create-date-range" },
+    { component: Booking, path: "/booking" },
   ],
-  user: [...mainRoutes, { component: Orders, path: "/orders" }],
+  user: [
+    ...mainRoutes,
+    { component: Orders, path: "/orders" },
+    { component: Booking, path: "/booking" },
+  ],
   unregUser: [...mainRoutes],
 }
 

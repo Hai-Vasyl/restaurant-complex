@@ -25,7 +25,7 @@ const Response: React.FC<IResponseProps> = ({
   const [answer, setAnswer] = useState("")
   const { createResponse } = useCreateResponse()
   const {
-    auth: { user },
+    auth: { user, token },
   } = useSelector((state: RootStore) => state)
 
   const handleChangeReply = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,9 +81,9 @@ const Response: React.FC<IResponseProps> = ({
           <div className='reply'>
             <button
               className={`reply__btn-toggle ${
-                replyActive && "reply__btn-toggle-close"
-              }`}
-              onClick={handleFlipReplyActive}>
+                !token && "reply__btn-toggle--disabled"
+              } ${replyActive && "reply__btn-toggle-close"}`}
+              onClick={token ? handleFlipReplyActive : () => {}}>
               {replyActive ? (
                 <BsX className='reply__toggle-icon' />
               ) : (

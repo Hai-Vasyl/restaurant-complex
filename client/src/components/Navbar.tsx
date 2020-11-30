@@ -21,15 +21,19 @@ const Navbar: React.FC = () => {
       <div className='nav__menu'>
         <NavLink exact to='/' className='logo-link'>
           <GiMountaintop className='logo-link__logo' />
-          <span className='logo-link__title'>ART VILLAGE</span>
+          <span className='logo-link__title'>Art-Village</span>
         </NavLink>
         {links.map(({ Icon, ...link }) => {
           const isProfileLink = link.to === `/user/${user._id}`
-          if ((isProfileLink || link.to === "/orders") && !token) {
+          if (
+            (isProfileLink ||
+              link.to === "/orders" ||
+              link.to === "/booking") &&
+            !token
+          ) {
             return
           } else if (
             link.to === "/create-date-range" &&
-            !token &&
             user.role !== "admin"
           ) {
             return

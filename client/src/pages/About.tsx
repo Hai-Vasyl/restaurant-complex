@@ -1,12 +1,28 @@
 import React, { useEffect, useState, useRef } from "react"
 import axios from "axios"
 import { http } from "../http"
-import { IImage, IHRComplexInfo } from "../interfaces"
+import { IImage } from "../interfaces"
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs"
 import { useDispatch, useSelector } from "react-redux"
 import ButtonArrow from "../components/ButtonArrow"
 import { fetchImages } from "../redux/actions/images"
 import { RootStore } from "../redux/store"
+// @ts-ignore
+import sectionImgLocation from "../images/undraw_map_1r69.svg"
+// @ts-ignore
+import sectionImgDescription from "../images/undraw_art_0tat.svg"
+// @ts-ignore
+import sectionImgFood from "../images/undraw_breakfast_psiw.svg"
+// @ts-ignore
+import sectionImgServicesIncluded from "../images/undraw_cabin_hkfr.svg"
+// @ts-ignore
+import sectionImgEntertainment from "../images/undraw_hiking_d24r.svg"
+// @ts-ignore
+import sectionImgServices from "../images/undraw_Profile_data_re_v81r.svg"
+// @ts-ignore
+import sectionImgContacts from "../images/undraw_contact_us_15o2.svg"
+// @ts-ignore
+import sectionImgRoad from "../images/undraw_navigator_a479.svg"
 import "../styles/about.scss"
 
 const About: React.FC = () => {
@@ -17,17 +33,6 @@ const About: React.FC = () => {
   const {
     images: { images, loading, fetched },
   } = useSelector((state: RootStore) => state)
-  const [hrComplexInfo, setHrComplexInfo] = useState<IHRComplexInfo>({
-    title: "",
-    location: "",
-    description: "",
-    food: "",
-    servicesIncluded: "",
-    entertainment: "",
-    services: "",
-    contacts: "",
-    road: "",
-  })
   const [imageActive, setImageActive] = useState<IImage>({
     _id: "",
     title: "",
@@ -36,6 +41,51 @@ const About: React.FC = () => {
     hrComplex: "",
   })
   const [error, setError] = useState("")
+  const [sections, setSections] = useState([
+    {
+      info: "",
+      title: "Розташування",
+      image: sectionImgLocation,
+      param: "location",
+    },
+    {
+      info: "",
+      title: "Опис",
+      image: sectionImgDescription,
+      param: "description",
+    },
+    { info: "", title: "Харчування", image: sectionImgFood, param: "food" },
+    {
+      info: "",
+      title: "Сервіс, включений у вартість",
+      image: sectionImgServicesIncluded,
+      param: "servicesIncluded",
+    },
+    {
+      info: "",
+      title: "Спорт, розваги",
+      image: sectionImgEntertainment,
+      param: "entertainment",
+    },
+    {
+      info: "",
+      title: "Сервіс за додаткову оплату",
+      image: sectionImgServices,
+      param: "services",
+    },
+    {
+      info: "",
+      title: "Контакти",
+      image: sectionImgContacts,
+      param: "contacts",
+    },
+    {
+      info: "",
+      title: "Як доїхати",
+      image: sectionImgRoad,
+      param: "road",
+    },
+  ])
 
   useEffect(() => {
     if (!fetched) {
@@ -67,7 +117,18 @@ const About: React.FC = () => {
             hrComplex,
           },
         })
-        setHrComplexInfo(res.data)
+
+        setSections((prevSections) =>
+          prevSections.map((section) => {
+            let newSection = section.info
+            Object.keys(res.data).map((key) => {
+              if (key === section.param) {
+                newSection = res.data[key]
+              }
+            })
+            return { ...section, info: newSection }
+          })
+        )
       } catch (error) {
         setError(`Error fetching hrcomplex info: ${error.message}`)
       }
@@ -100,6 +161,20 @@ const About: React.FC = () => {
   const handleSetActiveImage = (image: IImage) => {
     setImageActive(image)
   }
+
+  const sectionsJSX = sections.map((section) => {
+    return (
+      <div className='section' key={section.param}>
+        <div className='section__left-side'>
+          <img className='section__img' src={section.image} alt='sectionImg' />
+        </div>
+        <div className='section__right-side'>
+          <h3 className='section__title'>{section.title}:</h3>
+          <p className='section__paragraph'>{section.info}</p>
+        </div>
+      </div>
+    )
+  })
 
   if (initLoading || loading) {
     return (
@@ -155,38 +230,7 @@ const About: React.FC = () => {
         <h3 className='img-info__title'>{imageActive.title}</h3>
         <p className='img-info__paragraph'>{imageActive.description}</p>
       </div>
-      <div className='section'>
-        <h3 className='section__title'>Розташування:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.location}</p>
-      </div>
-      <div className='section'>
-        <h3 className='section__title'>Опис:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.description}</p>
-      </div>
-      <div className='section'>
-        <h3 className='section__title'>Харчування:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.food}</p>
-      </div>
-      <div className='section'>
-        <h3 className='section__title'>Сервіс, включений у вартість:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.servicesIncluded}</p>
-      </div>
-      <div className='section'>
-        <h3 className='section__title'>Сервіс за додаткову оплату:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.services}</p>
-      </div>
-      <div className='section'>
-        <h3 className='section__title'>Спорт, розваги:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.entertainment}</p>
-      </div>
-      <div className='section'>
-        <h3 className='section__title'>Контакти:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.contacts}</p>
-      </div>
-      <div className='section'>
-        <h3 className='section__title'>Як доїхати:</h3>
-        <p className='section__paragraph'>{hrComplexInfo.road}</p>
-      </div>
+      {sectionsJSX}
     </div>
   )
 }
