@@ -5,6 +5,8 @@
   "author": "Hai-Vasyl <hai.vasyl20@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "====== INSTALL ======": "",
+    "install-app":"yarn install",
     "====== BUILD ======": "",
     "build:dev:client": "cross-env NODE_ENV=development webpack --mode development --config webpack.client.js",
     "build:dev:server": "cross-env NODE_ENV=development webpack --mode development --config webpack.server.js",
@@ -15,7 +17,9 @@
     "start:server": "nodemon dist/server/server.js",
     "start:dev:client": "cross-env NODE_ENV=development webpack serve --config webpack.client.js --mode development",
     "start:dev:server": "concurrently \"yarn watch:server\" \"yarn start:server\"",
-    "start": "concurrently \"yarn start:dev:server\" \"yarn start:dev:client\""
+    "start:dev": "concurrently \"yarn start:dev:server\" \"yarn start:dev:client\"",
+    "heroku-postbuild": "yarn install-app && yarn build:prod",
+    "start": "node dist/server/server.js"
   },
   "devDependencies": {
     "@babel/core": "^7.12.7",
