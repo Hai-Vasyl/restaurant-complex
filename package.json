@@ -19,7 +19,6 @@
     "start:dev:client": "cross-env NODE_ENV=development webpack serve --config webpack.client.js --mode development",
     "start:dev:server": "concurrently \"yarn watch:server\" \"yarn start:server\"",
     "start:dev": "concurrently \"yarn start:dev:server\" \"yarn start:dev:client\"",
-    "heroku-postbuild": "yarn install-app && yarn build:prod",
     "start": "node dist/server/server.js"
   },
   "devDependencies": {
