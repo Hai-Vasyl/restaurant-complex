@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
 import Field from "./Field"
 import Button from "./Button"
-import { BsPlus, BsX } from "react-icons/bs"
+import { BsPencilSquare, BsX, BsTrash } from "react-icons/bs"
 import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 import { TOGGLE_EDIT_IMAGE_FORM } from "../redux/types/popup"
-import { UPDATE_IMAGE } from "../redux/types/images"
+import { UPDATE_IMAGE, DELETE_IMAGE } from "../redux/types/images"
 import axios from "axios"
 import { http } from "../http"
 import Loader from "./Loader"
@@ -76,6 +76,24 @@ const EditImage: React.FC = () => {
     } catch (error) {}
   }
 
+  const handleRemoveImage = async () => {
+    try {
+      setLoading(true)
+
+      await axios({
+        url: `${http}/image/delete-image/${editImage._id}`,
+        method: "delete",
+        headers: token && {
+          Authorization: `Basic ${token}`,
+        },
+      })
+
+      dispatch({ type: DELETE_IMAGE, payload: editImage._id })
+      dispatch({ type: TOGGLE_EDIT_IMAGE_FORM })
+      setLoading(false)
+    } catch (error) {}
+  }
+
   const handleChangeField = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevForm) =>
       prevForm.map((field) => {
@@ -102,12 +120,18 @@ const EditImage: React.FC = () => {
         {fields}
         <button className='btn-handler'></button>
       </form>
-      <div className='auth-form__btns'>
+      <div className='auth-form__btns edit-form__btns'>
         <Button
-          Icon={BsPlus}
+          Icon={BsPencilSquare}
           exClass='btn-primary'
           title='Оновити'
           click={handleSubmitForm}
+        />
+        <Button
+          Icon={BsTrash}
+          exClass='btn-danger'
+          title='Видалити'
+          click={handleRemoveImage}
         />
         <Button
           Icon={BsX}

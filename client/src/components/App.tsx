@@ -3,6 +3,7 @@ import { SET_AUTH } from "../redux/types/auth"
 import { useDispatch } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import Routes from "./Routes"
+import MainLoader from "../components/MainLoader"
 
 const App: React.FC = () => {
   const [initLoading, setInitLoading] = useState(true)
@@ -10,13 +11,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch({ type: SET_AUTH })
-    setInitLoading(false)
+    setTimeout(() => {
+      setInitLoading(false)
+    }, 2000)
   }, [dispatch])
 
   if (initLoading) {
-    return <div>LOADING...</div>
+    return <MainLoader />
   }
-
   return (
     <Router>
       <Routes />

@@ -25,6 +25,7 @@ const Gallery: React.FC = () => {
   const {
     images: { images, fetched, loading },
     popup: { popupImg },
+    auth: { user, token },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
   const [initLoading, setInitLoading] = useState(true)
@@ -102,9 +103,11 @@ const Gallery: React.FC = () => {
               key={img.path}
               onClick={() => handlePopup(img)}
             >
-              <button onClick={(event) => handlePopupEdit(event, img)}>
-                <BsPencilSquare className='gallery-img__btn-edit' />
-              </button>
+              {token && user.role === "admin" && (
+                <button onClick={(event) => handlePopupEdit(event, img)}>
+                  <BsPencilSquare className='gallery-img__btn-edit' />
+                </button>
+              )}
               <div className='gallery-img__wrapper'>
                 <img
                   className='gallery-img__thumbnail'

@@ -54,3 +54,7 @@
 .btn-post {
   padding: 10px 15px;
 }
+
+.btn-danger {
+  border: 1px solid getColor(bg-danger);
+}

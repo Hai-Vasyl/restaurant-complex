@@ -3,6 +3,7 @@ import {
   FETCH_START_IMAGES,
   SET_NEW_IMAGE,
   UPDATE_IMAGE,
+  DELETE_IMAGE,
   ActionsDispatch,
 } from "../types/images"
 import { IImage } from "../../interfaces"
@@ -46,6 +47,11 @@ const imageReducer = (state = initState, action: ActionsDispatch) => {
           }
           return img
         }),
+      }
+    case DELETE_IMAGE:
+      return {
+        ...state,
+        images: [...state.images].filter((img) => img._id !== action.payload),
       }
     default:
       return state

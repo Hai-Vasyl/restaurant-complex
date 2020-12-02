@@ -48,17 +48,23 @@ export const upload_image = async (req: any, res: any) => {
 
 export const delete_image = async (req: any, res: any) => {
   try {
-    const { key } = req.params
+    const { imageId } = req.params
+    const image: any = await Image.findById(imageId)
+
+    let imageKey = image.path.split("/")
+    imageKey = imageKey[imageKey.length - 1]
 
     // @ts-ignore
     await s3
       .deleteObject({
-        Key: key,
+        Key: imageKey,
         Bucket: AWS_BUCKET,
       })
       .promise()
 
-    return {}
+    await Image.deleteOne({ _id: imageId })
+
+    res.json({ message: "Image deleted successfully!" })
   } catch (error) {
     res.json(`Deleting image error: ${error.message}`)
   }
@@ -81,10 +87,7 @@ export const update_image = async (req: any, res: any) => {
     const { title, description } = req.body
     const { imageId } = req.params
 
-    const image = await Image.updateOne(
-      { _id: imageId },
-      { title, description }
-    )
+    await Image.updateOne({ _id: imageId }, { title, description })
     const updatedImage = await Image.findById(imageId)
 
     res.json(updatedImage)

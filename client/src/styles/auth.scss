@@ -46,4 +46,11 @@
   &__img {
     @extend %image;
   }
+  &__btns {
+    justify-content: space-between;
+    & > * {
+      margin: 0px !important;
+      padding: 15px 10px;
+    }
+  }
 }

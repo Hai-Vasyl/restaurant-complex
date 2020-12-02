@@ -14,7 +14,7 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage }).single("image")
 
 router.post("/upload-image", auth, upload, upload_image)
-router.delete("/delete-image/:key", auth, delete_image)
+router.delete("/delete-image/:imageId", auth, delete_image)
 router.post("/all", get_images)
 router.post("/update-image/:imageId", auth, update_image)
 
