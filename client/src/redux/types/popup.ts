@@ -1,6 +1,7 @@
 export const TOGGLE_FORM_AUTH = "TOGGLE_FORM_AUTH"
 export const TOGGLE_POPUP_IMG = "TOGGLE_POPUP_IMG"
 export const TOGGLE_CONFIRM_FORM = "TOGGLE_CONFIRM_FORM"
+export const TOGGLE_CREATE_IMAGE_FORM = "TOGGLE_CREATE_IMAGE_FORM"
 export const RESET_POPUP = "RESET_POPUP"
 
 interface toggleFormAuth {
@@ -15,6 +16,10 @@ interface toggleConfirmForm {
   type: typeof TOGGLE_CONFIRM_FORM
 }
 
+interface createImagePopup {
+  type: typeof TOGGLE_CREATE_IMAGE_FORM
+}
+
 interface resetPopup {
   type: typeof RESET_POPUP
 }
@@ -24,3 +29,4 @@ export type ActionsDispatch =
   | resetPopup
   | togglePopupImg
   | toggleConfirmForm
+  | createImagePopup

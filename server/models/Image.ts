@@ -5,6 +5,7 @@ const schema = new Schema({
   hrComplex: { type: Types.ObjectId, ref: "HRcomplex", required: true },
   title: { type: String, default: "" },
   description: { type: String, default: "" },
+  date: { type: Date, required: true },
 })
 
 export default model("Image", schema)

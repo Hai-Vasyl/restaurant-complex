@@ -83,4 +83,24 @@ button {
     font-size: 1.4em;
     font-weight: normal;
   }
+  &__btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    background-color: getColor(font-white);
+    border: 1px solid getColor(secondary);
+    margin-left: auto;
+    transition: getTransition(main);
+    &:hover {
+      border-color: getColor(accent);
+    }
+    &:active {
+      opacity: 0.5;
+    }
+  }
+  &__btn-icon {
+    margin: auto;
+    font-size: 1.1em;
+  }
 }

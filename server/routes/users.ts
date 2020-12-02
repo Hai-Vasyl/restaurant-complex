@@ -6,9 +6,15 @@ import {
   get_user,
   update_user,
   get_users,
+  change_avatar,
 } from "../controllers/users"
 import auth from "../middlewares/auth.middleware"
+// @ts-ignore
+import multer from "multer"
 const router = Router()
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage }).single("avatar")
 
 router.post(
   "/register",
@@ -71,5 +77,7 @@ router.post(
 )
 
 router.get("/users", get_users)
+
+router.post("/change-avatar", auth, upload, change_avatar)
 
 export default router

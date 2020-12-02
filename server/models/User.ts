@@ -8,7 +8,7 @@ const schema = new Schema({
     type: String,
     required: true,
     default:
-      "https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png",
+      "https://restaurant-bucket.s3.eu-central-1.amazonaws.com/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png",
   },
   firstname: { type: String, default: "" },
   lastname: { type: String, default: "" },

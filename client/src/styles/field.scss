@@ -77,3 +77,14 @@
     color: getColor(font);
   }
 }
+
+.file-picker {
+  margin-bottom: 15px;
+  &__picker {
+    text-align: center;
+    color: getColor(font-white);
+  }
+  &__pick {
+    display: none;
+  }
+}

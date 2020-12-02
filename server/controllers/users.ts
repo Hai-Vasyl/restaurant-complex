@@ -3,9 +3,15 @@ import { validationResult } from "express-validator"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { config } from "dotenv"
+import AWS from "aws-sdk"
+import { v4 as uuidv4 } from "uuid"
 config()
+const { AWS_ID, AWS_SECRET, AWS_BUCKET, JWT_SECRET }: any = process.env
 
-const { JWT_SECRET }: any = process.env
+const s3 = new AWS.S3({
+  accessKeyId: AWS_ID,
+  secretAccessKey: AWS_SECRET,
+})
 
 const checkUniqueCred = async (
   username: string,
@@ -191,5 +197,57 @@ export const get_users = async (req: any, res: any) => {
     res.json(users)
   } catch (error) {
     res.status(400).json(`Getting all users error: ${error.message}`)
+  }
+}
+
+export const change_avatar = async (req: any, res: any) => {
+  try {
+    const { file, userId } = req
+
+    if (!Object.keys(file).length) {
+      return res.status(400).json("File doesn't exists!")
+    }
+
+    const user: any = await User.findById(userId)
+    if (!(user && user.ava)) {
+      return res.status(400).json("User doesn't exists!")
+    }
+
+    let userAvaParts = user.ava.split("/")
+    userAvaParts = userAvaParts[userAvaParts.length - 1]
+    if (
+      userAvaParts !==
+      "114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
+    ) {
+      await s3
+        .deleteObject({
+          Key: userAvaParts,
+          Bucket: AWS_BUCKET,
+        })
+        .promise()
+    }
+
+    const imageParts = file.originalname.split(".")
+    const imageExt = imageParts[imageParts.length - 1]
+
+    const params = {
+      Bucket: AWS_BUCKET,
+      Key: `${uuidv4()}.${imageExt}`,
+      Body: file.buffer,
+    }
+
+    // @ts-ignore
+    s3.upload(params, async (error, data) => {
+      if (error) {
+        return res
+          .status(400)
+          .json(`Updating user avatar error: ${error.message}`)
+      }
+
+      await User.updateOne({ _id: userId }, { ava: data.Location })
+      res.json({ ava: data.Location })
+    })
+  } catch (error) {
+    res.status(400).json(`Changing avatar user error: ${error.message}`)
   }
 }

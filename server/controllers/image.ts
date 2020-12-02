@@ -27,7 +27,7 @@ export const upload_image = async (req: any, res: any) => {
     // @ts-ignore
     s3.upload(params, async (error, data) => {
       if (error) {
-        res.status(400).json(`Uploading file error: ${error.message}`)
+        return res.status(400).json(`Uploading file error: ${error.message}`)
       }
 
       const image = new Image({
@@ -35,6 +35,7 @@ export const upload_image = async (req: any, res: any) => {
         hrComplex,
         title,
         description,
+        date: new Date(),
       })
       const newImage = await image.save()
 
@@ -67,7 +68,7 @@ export const get_images = async (req: any, res: any) => {
   try {
     const { hrComplex } = req.body
 
-    const images = await Image.find({ hrComplex })
+    const images = await Image.find({ hrComplex }).sort({ date: -1 })
 
     res.json(images)
   } catch (error) {

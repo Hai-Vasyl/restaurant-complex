@@ -7,11 +7,12 @@ import { RESET_POPUP } from "../redux/types/popup"
 import Auth from "./Auth"
 import Navbar from "./Navbar"
 import Confirm from "./Confirm"
+import CreateImage from "./CreateImage"
 
 const Routes: React.FC = () => {
   const {
     auth: { token, user },
-    popup: { authForm, popupImg, confirmForm },
+    popup: { authForm, popupImg, confirmForm, createImgForm },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
 
@@ -26,11 +27,14 @@ const Routes: React.FC = () => {
       <Navbar />
       <Auth />
       <Confirm />
+      <CreateImage />
       <div
         onClick={() => dispatch({ type: RESET_POPUP })}
         className={`background ${
-          (authForm || popupImg || confirmForm) && "background--active"
-        }`}></div>
+          (authForm || popupImg || confirmForm || createImgForm) &&
+          "background--active"
+        }`}
+      ></div>
       {token ? (
         user.role === "admin" ? (
           <Switch>

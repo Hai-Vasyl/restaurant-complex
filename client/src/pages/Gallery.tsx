@@ -3,9 +3,12 @@ import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 import { fetchImages } from "../redux/actions/images"
 import { IImage } from "../interfaces"
-import { TOGGLE_POPUP_IMG } from "../redux/types/popup"
+import {
+  TOGGLE_POPUP_IMG,
+  TOGGLE_CREATE_IMAGE_FORM,
+} from "../redux/types/popup"
 import ButtonArrow from "../components/ButtonArrow"
-import { BsArrowLeft, BsArrowRight, BsImages } from "react-icons/bs"
+import { BsArrowLeft, BsArrowRight, BsImages, BsPlus } from "react-icons/bs"
 import useMoveSlider from "../hooks/useMoveSlider"
 import Title from "../components/Title"
 import "../styles/gallery.scss"
@@ -44,7 +47,12 @@ const Gallery: React.FC = () => {
   }
   return (
     <div className='wrapper'>
-      <Title Icon={BsImages} title='Галерея' />
+      <Title
+        Icon={BsImages}
+        title='Галерея'
+        IconBtn={BsPlus}
+        click={() => dispatch({ type: TOGGLE_CREATE_IMAGE_FORM })}
+      />
       <div className={`img-popup ${popupImg && "img-popup--active"}`}>
         <ButtonArrow
           exClass='img-popup__arrow arrow-left'
@@ -77,7 +85,8 @@ const Gallery: React.FC = () => {
             <div
               className='gallery-img'
               key={img.path}
-              onClick={() => handlePopup(img)}>
+              onClick={() => handlePopup(img)}
+            >
               <img
                 className='gallery-img__thumbnail'
                 src={img.path}

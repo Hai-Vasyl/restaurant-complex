@@ -113,8 +113,26 @@ const Profile: React.FC = () => {
     }
   }, [http, userId, isAuthProfile])
 
-  const handleChangeImage = () => {
-    console.log("change image")
+  const handleChangeImage = async (event: any) => {
+    const image = event.target.files[0]
+    if (!image) {
+      return
+    }
+
+    let data = new FormData()
+    data.append("avatar", image, image.name)
+
+    const res = await axios({
+      url: `${http}/auth/change-avatar`,
+      method: "post",
+      data,
+      headers: token && {
+        Authorization: `Basic ${token}`,
+      },
+    })
+    const { ava } = res.data
+    dispatch({ type: UPDATE_AUTH, payload: { ...user, ava } })
+    setUserData({ ...userData, ava })
   }
 
   const handleChangeField = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,11 +264,14 @@ const Profile: React.FC = () => {
               <img
                 src={userData.ava}
                 alt='userAva'
-                onChange={handleChangeImage}
                 className='user-info__ava'
               />
               <RiUserSettingsLine className='user-info__icon-type' />
-              <input type='file' className='user-info__btn-file' />
+              <input
+                type='file'
+                onChange={handleChangeImage}
+                className='user-info__btn-file'
+              />
             </label>
           </div>
           {isAuthProfile && (
@@ -268,7 +289,8 @@ const Profile: React.FC = () => {
               onClick={() => (isAuthProfile ? setFlipToForm(false) : () => {})}
               className={`user-tabs__tab ${
                 !flipToForm && "user-tabs__tab--active"
-              }`}>
+              }`}
+            >
               <BsInfoCircle className='user-tabs__icon' />
               <span className='user-tabs__title'>Інформація</span>
             </button>
@@ -277,7 +299,8 @@ const Profile: React.FC = () => {
                 onClick={() => setFlipToForm(true)}
                 className={`user-tabs__tab ${
                   flipToForm && "user-tabs__tab--active"
-                }`}>
+                }`}
+              >
                 <BsGear className='user-tabs__icon' />
                 <span className='user-tabs__title'>Налаштування</span>
               </button>
@@ -347,7 +370,8 @@ const Profile: React.FC = () => {
                     }
                   : handleApplyForm
               }
-              className='user-form__fields'>
+              className='user-form__fields'
+            >
               {fields}
               <button className='btn-handler'></button>
             </form>
