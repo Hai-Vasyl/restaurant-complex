@@ -1,9 +1,12 @@
+import { IImage } from "../../interfaces"
+
 import {
   TOGGLE_FORM_AUTH,
   RESET_POPUP,
   TOGGLE_POPUP_IMG,
   TOGGLE_CONFIRM_FORM,
   TOGGLE_CREATE_IMAGE_FORM,
+  TOGGLE_EDIT_IMAGE_FORM,
   ActionsDispatch,
 } from "../types/popup"
 
@@ -12,6 +15,16 @@ interface IInitState {
   popupImg: boolean
   confirmForm: boolean
   createImgForm: boolean
+  editImage: IImage
+  editForm: boolean
+}
+
+const initImage = {
+  description: "",
+  title: "",
+  path: "",
+  hrComplex: "",
+  _id: "",
 }
 
 const initState: IInitState = {
@@ -19,6 +32,8 @@ const initState: IInitState = {
   popupImg: false,
   confirmForm: false,
   createImgForm: false,
+  editImage: initImage,
+  editForm: false,
 }
 
 const popupReducer = (
@@ -46,12 +61,20 @@ const popupReducer = (
         ...state,
         createImgForm: !state.createImgForm,
       }
+    case TOGGLE_EDIT_IMAGE_FORM:
+      return {
+        ...state,
+        editImage: state.editForm ? initImage : action.payload,
+        editForm: !state.editForm,
+      }
     case RESET_POPUP:
       return {
         confirmForm: false,
         authForm: false,
         popupImg: false,
         createImgForm: false,
+        editImage: initImage,
+        editForm: false,
       }
 
     default:

@@ -40,3 +40,10 @@
     }
   }
 }
+
+.edit-form {
+  height: 60px;
+  &__img {
+    @extend %image;
+  }
+}

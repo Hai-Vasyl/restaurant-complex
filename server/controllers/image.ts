@@ -60,7 +60,7 @@ export const delete_image = async (req: any, res: any) => {
 
     return {}
   } catch (error) {
-    res.json(`Upload image error: ${error.message}`)
+    res.json(`Deleting image error: ${error.message}`)
   }
 }
 
@@ -72,6 +72,23 @@ export const get_images = async (req: any, res: any) => {
 
     res.json(images)
   } catch (error) {
-    res.json(`Getting image error: ${error.message}`)
+    res.json(`Getting images error: ${error.message}`)
+  }
+}
+
+export const update_image = async (req: any, res: any) => {
+  try {
+    const { title, description } = req.body
+    const { imageId } = req.params
+
+    const image = await Image.updateOne(
+      { _id: imageId },
+      { title, description }
+    )
+    const updatedImage = await Image.findById(imageId)
+
+    res.json(updatedImage)
+  } catch (error) {
+    res.json(`Updating image error: ${error.message}`)
   }
 }

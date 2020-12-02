@@ -2,6 +2,7 @@ import {
   FETCH_SUCCESS_IMAGES,
   FETCH_START_IMAGES,
   SET_NEW_IMAGE,
+  UPDATE_IMAGE,
   ActionsDispatch,
 } from "../types/images"
 import { IImage } from "../../interfaces"
@@ -35,6 +36,16 @@ const imageReducer = (state = initState, action: ActionsDispatch) => {
       return {
         ...state,
         images: [action.payload, ...state.images],
+      }
+    case UPDATE_IMAGE:
+      return {
+        ...state,
+        images: [...state.images].map((img) => {
+          if (img._id === action.payload._id) {
+            return { ...action.payload }
+          }
+          return img
+        }),
       }
     default:
       return state

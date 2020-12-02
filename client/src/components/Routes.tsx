@@ -8,11 +8,12 @@ import Auth from "./Auth"
 import Navbar from "./Navbar"
 import Confirm from "./Confirm"
 import CreateImage from "./CreateImage"
+import EditImage from "./EditImage"
 
 const Routes: React.FC = () => {
   const {
     auth: { token, user },
-    popup: { authForm, popupImg, confirmForm, createImgForm },
+    popup: { authForm, popupImg, confirmForm, createImgForm, editForm },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
 
@@ -28,10 +29,11 @@ const Routes: React.FC = () => {
       <Auth />
       <Confirm />
       <CreateImage />
+      <EditImage />
       <div
         onClick={() => dispatch({ type: RESET_POPUP })}
         className={`background ${
-          (authForm || popupImg || confirmForm || createImgForm) &&
+          (authForm || popupImg || confirmForm || createImgForm || editForm) &&
           "background--active"
         }`}
       ></div>

@@ -9,6 +9,7 @@ import { TOGGLE_CREATE_IMAGE_FORM } from "../redux/types/popup"
 import axios from "axios"
 import { http } from "../http"
 import { SET_NEW_IMAGE } from "../redux/types/images"
+import Loader from "./Loader"
 
 const CreateImage: React.FC = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
@@ -22,6 +23,7 @@ const CreateImage: React.FC = () => {
     { param: "title", title: "Заголовок", value: "", type: "text" },
     { param: "description", title: "Опис", value: "", type: "text" },
   ])
+  const [loading, setLoading] = useState(false)
 
   const handleSubmitForm = async (
     event:
@@ -33,7 +35,7 @@ const CreateImage: React.FC = () => {
       if (!image) {
         return
       }
-
+      setLoading(true)
       let data = new FormData()
       data.append("image", image, image.name)
       form.forEach((field) => {
@@ -53,6 +55,7 @@ const CreateImage: React.FC = () => {
 
       dispatch({ type: SET_NEW_IMAGE, payload: res.data })
       dispatch({ type: TOGGLE_CREATE_IMAGE_FORM })
+      setLoading(false)
     } catch (error) {}
   }
 
@@ -77,6 +80,7 @@ const CreateImage: React.FC = () => {
 
   return (
     <div className={`auth-form ${createImgForm && "auth-form--open"}`}>
+      <Loader action={loading} />
       <div className='auth-form__title'>Додати зображення</div>
       <form
         className='auth-form__fields'

@@ -8,9 +8,16 @@ import {
   TOGGLE_CREATE_IMAGE_FORM,
 } from "../redux/types/popup"
 import ButtonArrow from "../components/ButtonArrow"
-import { BsArrowLeft, BsArrowRight, BsImages, BsPlus } from "react-icons/bs"
+import {
+  BsArrowLeft,
+  BsArrowRight,
+  BsImages,
+  BsPlus,
+  BsPencilSquare,
+} from "react-icons/bs"
 import useMoveSlider from "../hooks/useMoveSlider"
 import Title from "../components/Title"
+import { TOGGLE_EDIT_IMAGE_FORM } from "../redux/types/popup"
 import "../styles/gallery.scss"
 
 const Gallery: React.FC = () => {
@@ -40,6 +47,14 @@ const Gallery: React.FC = () => {
   const handlePopup = (imageData: IImage) => {
     setActiveImage(imageData)
     dispatch({ type: TOGGLE_POPUP_IMG })
+  }
+
+  const handlePopupEdit = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    img: IImage
+  ) => {
+    event.stopPropagation()
+    dispatch({ type: TOGGLE_EDIT_IMAGE_FORM, payload: img })
   }
 
   if (initLoading || loading) {
@@ -87,11 +102,16 @@ const Gallery: React.FC = () => {
               key={img.path}
               onClick={() => handlePopup(img)}
             >
-              <img
-                className='gallery-img__thumbnail'
-                src={img.path}
-                alt='img'
-              />
+              <button onClick={(event) => handlePopupEdit(event, img)}>
+                <BsPencilSquare className='gallery-img__btn-edit' />
+              </button>
+              <div className='gallery-img__wrapper'>
+                <img
+                  className='gallery-img__thumbnail'
+                  src={img.path}
+                  alt='img'
+                />
+              </div>
             </div>
           )
         })}
