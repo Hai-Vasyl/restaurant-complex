@@ -7,6 +7,7 @@ import { IOrder } from "../interfaces"
 import Title from "../components/Title"
 import { BsCardChecklist, BsArrowRight } from "react-icons/bs"
 import { GiMountaintop } from "react-icons/gi"
+import MainLoader from "../components/MainLoader"
 import "../styles/orders.scss"
 
 const Orders: React.FC = () => {
@@ -35,8 +36,13 @@ const Orders: React.FC = () => {
   }, [http])
 
   if (initLoading) {
-    return <div className='wrapper'>LOADING ...</div>
+    return (
+      <div className='wrapper'>
+        <MainLoader />
+      </div>
+    )
   }
+
   return (
     <div className='wrapper'>
       <Title Icon={BsCardChecklist} title='Замовлено' />

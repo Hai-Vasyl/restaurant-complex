@@ -7,6 +7,7 @@ import { RootStore } from "../redux/store"
 import { AiOutlineLogin, AiOutlineCheckCircle } from "react-icons/ai"
 import Button from "./Button"
 import Field from "./Field"
+import Loader from "./Loader"
 import "../styles/auth.scss"
 
 const Auth: React.FC = () => {
@@ -103,10 +104,9 @@ const Auth: React.FC = () => {
     )
   })
 
-  console.log({ errors, token })
-
   return (
     <div className={`auth-form ${authForm && "auth-form--open"}`}>
+      <Loader action={loading} />
       <div className='auth-form__title'>
         {flipLogin ? "Увійти" : "Реєстрація"}
       </div>

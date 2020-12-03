@@ -30,6 +30,7 @@
     height: 83vh;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
   &__msg {
     @extend %flex-center;
@@ -255,8 +256,6 @@
   &__eviction {
     background-color: getColor(main);
     padding: 4px;
-  }
-  &__price {
   }
   &__grivna-sign {
     font-size: 0.9em;

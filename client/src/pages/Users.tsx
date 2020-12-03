@@ -4,13 +4,17 @@ import { http } from "../http"
 import { IUserBrief } from "../interfaces"
 import { Link } from "react-router-dom"
 import { RiUserSettingsLine } from "react-icons/ri"
+import { BsPeople } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { RootStore } from "../redux/store"
 import moment from "moment"
+import MainLoader from "../components/MainLoader"
+import Title from "../components/Title"
 import "../styles/users.scss"
 
 const Users: React.FC = () => {
   const [users, setUsers] = useState<IUserBrief[]>([])
+  const [initLoad, setInitLoad] = useState(true)
   const {
     auth: { user: userAuth },
   } = useSelector((state: RootStore) => state)
@@ -23,6 +27,7 @@ const Users: React.FC = () => {
           method: "get",
         })
 
+        setInitLoad(false)
         setUsers(res.data)
       } catch (error) {}
     }
@@ -30,15 +35,25 @@ const Users: React.FC = () => {
     fetchData()
   }, [http])
 
+  if (initLoad) {
+    return (
+      <div className='wrapper'>
+        <MainLoader />
+      </div>
+    )
+  }
+
   return (
     <div className='wrapper'>
+      <Title Icon={BsPeople} title='Користувачі' />
       <div className='users-wrapper'>
         {users.map((user) => {
           return (
             <div className='user-link' key={user._id}>
               <Link
                 className='user-link__img-container'
-                to={`/user/${user._id}`}>
+                to={`/user/${user._id}`}
+              >
                 <img
                   className='user-link__img-ava'
                   src={user.ava}

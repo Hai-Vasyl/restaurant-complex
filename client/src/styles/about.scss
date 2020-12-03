@@ -21,17 +21,7 @@
     overflow-y: auto;
     padding: 0px 7px;
     background-color: getColor(main);
-    &::-webkit-scrollbar {
-      width: 0.6em;
-      border-radius: getRadius(main);
-    }
-    &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: getColor(accent);
-      cursor: pointer;
-    }
+    position: relative;
   }
 }
 

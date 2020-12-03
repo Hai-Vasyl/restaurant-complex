@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 import { CREATE_NEW_DATE, DELETE_DATE } from "../redux/types/dates"
 import { fetchDates } from "../redux/actions/dates"
+import MainLoader from "../components/MainLoader"
+import Loader from "../components/Loader"
 import "../styles/createdaterange.scss"
 
 const CreateDateRange: React.FC = () => {
@@ -30,6 +32,7 @@ const CreateDateRange: React.FC = () => {
     eviction: "",
   })
   const [errorFetch, setErrorFetch] = useState("")
+  const [loadingDates, setLoadingDates] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
   const [price, setPrice] = useState("")
 
@@ -85,6 +88,7 @@ const CreateDateRange: React.FC = () => {
         return setErrorMsg("Діапазон дат перетинається або вже існує!")
       }
 
+      setLoadingDates(true)
       const newDateRange = {
         settlement: dateRange.settlement,
         eviction: dateRange.eviction,
@@ -108,6 +112,7 @@ const CreateDateRange: React.FC = () => {
         eviction: "",
       })
       setPrice("")
+      setLoadingDates(false)
     } catch (error) {}
   }
 
@@ -125,23 +130,29 @@ const CreateDateRange: React.FC = () => {
     } catch (error) {}
   }
 
-  if (initLoading || loading) {
-    return <div className='wrapper'>LOADING ...</div>
-  }
-  if (errorFetch.length) {
-    return <div className='wrapper'>Error happend: {errorFetch}</div>
-  }
-
   const fieldFilled =
     !errorMsg.length &&
     dateRange.settlement.length &&
     dateRange.eviction.length &&
     price.length
+
+  if (initLoading || loading) {
+    return (
+      <div className='wrapper'>
+        <MainLoader />
+      </div>
+    )
+  }
+  if (errorFetch.length) {
+    return <div className='wrapper'>Error happend: {errorFetch}</div>
+  }
+
   return (
     <div className='wrapper'>
       <Title Icon={BsPlusSquare} title='Створити слот' />
       <div className='range-form'>
         <div className='range-form__tools'>
+          <Loader action={loadingDates} />
           <div className='range-form__btns'>
             <FieldDateRange onChangePicker={onChangePicker} />
             <Field
@@ -152,23 +163,26 @@ const CreateDateRange: React.FC = () => {
             />
             <button
               className={`btn-create ${!fieldFilled && "btn-create--disabled"}`}
-              onClick={fieldFilled ? handleSubmit : () => {}}>
+              onClick={fieldFilled ? handleSubmit : () => {}}
+            >
               <BsPlus className='btn-create__icon' />
             </button>
           </div>
           <div
             className={`range-form__error ${
               errorMsg.length && "range-form__error--active"
-            }`}>
+            }`}
+          >
             <BiError className='range-form__error-icon' />
             {errorMsg}
           </div>
-          <div className='range-form__dates'>
+          <div className='range-form__dates stack-scroll'>
             {dates.map((date) => {
               return (
                 <div
                   className={`slot ${date.booked && "slot--disabled"}`}
-                  key={date._id}>
+                  key={date._id}
+                >
                   <span className='slot__settlement'>
                     {date.settlement.slice(0, 10)}
                   </span>
@@ -179,7 +193,8 @@ const CreateDateRange: React.FC = () => {
                   <span className='slot__price'>{date.price} &#8372;</span>
                   <button
                     className='slot__btn-delete'
-                    onClick={() => handleDelete(date._id)}>
+                    onClick={() => handleDelete(date._id)}
+                  >
                     <BsX />
                   </button>
                 </div>

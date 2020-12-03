@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import Button from "../components/Button"
-import Field from "../components/Field"
+import Button from "./Button"
+import Field from "./Field"
 import { BsDashCircle, BsCheckCircle } from "react-icons/bs"
 import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
@@ -10,6 +10,7 @@ import { IDateRange } from "../interfaces"
 import { SET_ERROR_MSG_BOOKING } from "../redux/types/error"
 import axios from "axios"
 import { http } from "../http"
+import Loader from "./Loader"
 
 const Confirm = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
@@ -19,6 +20,7 @@ const Confirm = () => {
     dates: { dates },
   } = useSelector((state: RootStore) => state)
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState([
     {
       param: "firstname",
@@ -65,7 +67,7 @@ const Confirm = () => {
   ) => {
     try {
       event.preventDefault()
-
+      setLoading(true)
       let chosenDates: IDateRange[] = []
       dates.forEach((date) => {
         if (date.chosen) {
@@ -128,7 +130,7 @@ const Confirm = () => {
 
         dispatch({ type: UPDATE_DATE, payload: newDates })
       }
-
+      setLoading(false)
       dispatch({ type: TOGGLE_CONFIRM_FORM })
     } catch (error) {}
   }
@@ -139,6 +141,7 @@ const Confirm = () => {
 
   return (
     <div className={`auth-form ${confirmForm && "auth-form--open"}`}>
+      <Loader action={loading} />
       <div className='auth-form__title'>Підтвердження</div>
       <form className='auth-form__fields' onSubmit={handleSubmitForm}>
         {fields}

@@ -23,11 +23,14 @@ import sectionImgServices from "../images/undraw_Profile_data_re_v81r.svg"
 import sectionImgContacts from "../images/undraw_contact_us_15o2.svg"
 // @ts-ignore
 import sectionImgRoad from "../images/undraw_navigator_a479.svg"
+import MainLoader from "../components/MainLoader"
+import Loader from "../components/Loader"
 import "../styles/about.scss"
 
 const About: React.FC = () => {
   const hrComplex = "5fbc47e525b10c027c2d5f8b"
   const [initLoading, setInitLoading] = useState(true)
+  const [hrComplexLoad, setHrComplexLoad] = useState(true)
   const activeTabImage = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
   const {
@@ -129,6 +132,7 @@ const About: React.FC = () => {
             return { ...section, info: newSection }
           })
         )
+        setHrComplexLoad(false)
       } catch (error) {
         setError(`Error fetching hrcomplex info: ${error.message}`)
       }
@@ -179,7 +183,7 @@ const About: React.FC = () => {
   if (initLoading || loading) {
     return (
       <div className='wrapper'>
-        <div>LOADING...</div>
+        <MainLoader />
       </div>
     )
   }
@@ -210,7 +214,8 @@ const About: React.FC = () => {
             click={() => handleMove(false)}
           />
         </div>
-        <div className='slider__stack'>
+        <div className='slider__stack stack-scroll'>
+          <Loader action={hrComplexLoad} exClass='slider__stack-loader' />
           {images.map((img) => {
             return (
               <div
@@ -219,7 +224,8 @@ const About: React.FC = () => {
                 className={`image ${
                   imageActive._id === img._id && "image--active"
                 }`}
-                key={img.path}>
+                key={img.path}
+              >
                 <img src={img.path} className='image__thumbnail' alt='img' />
               </div>
             )

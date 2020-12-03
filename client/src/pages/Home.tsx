@@ -8,7 +8,7 @@ import { TOGGLE_FORM_AUTH } from "../redux/types/popup"
 import { useSelector, useDispatch } from "react-redux"
 import { RootStore } from "../redux/store"
 // @ts-ignore
-import imageMain from "../images/undraw_nature_m5ll.svg"
+import imageMain from "../images/photo_2020-11-24_01-43-26.jpg"
 
 const Home: React.FC = () => {
   const history = useHistory()

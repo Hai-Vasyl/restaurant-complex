@@ -12,6 +12,7 @@ import Button from "../components/Button"
 import { BsCheck, BsX, BsInfoCircle, BsGear } from "react-icons/bs"
 import { IAuthError, UPDATE_AUTH, LOGOUT_AUTH } from "../redux/types/auth"
 import { AiOutlineLogout } from "react-icons/ai"
+import MainLoader from "../components/MainLoader"
 import "../styles/profile.scss"
 
 const Profile: React.FC = () => {
@@ -96,6 +97,7 @@ const Profile: React.FC = () => {
   ])
   const [flipToForm, setFlipToForm] = useState(false)
   const [changed, setChanged] = useState(false)
+  const [initLoading, setInitLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,12 +106,15 @@ const Profile: React.FC = () => {
           url: `${http}/auth/get-info/${userId}`,
           method: "get",
         })
+        setInitLoading(false)
         setUserData(res.data)
       } catch (error) {}
     }
 
     if (!isAuthProfile) {
       fetchData()
+    } else {
+      setInitLoading(false)
     }
   }, [http, userId, isAuthProfile])
 
@@ -255,6 +260,15 @@ const Profile: React.FC = () => {
   })
 
   const isEmptyField = checkFieldsEmpty()
+
+  if (initLoading) {
+    return (
+      <div className='wrapper'>
+        <MainLoader />
+      </div>
+    )
+  }
+
   return (
     <div className='wrapper'>
       <div className='user-info'>
@@ -267,11 +281,13 @@ const Profile: React.FC = () => {
                 className='user-info__ava'
               />
               <RiUserSettingsLine className='user-info__icon-type' />
-              <input
-                type='file'
-                onChange={handleChangeImage}
-                className='user-info__btn-file'
-              />
+              {isAuthProfile && (
+                <input
+                  type='file'
+                  onChange={handleChangeImage}
+                  className='user-info__btn-file'
+                />
+              )}
             </label>
           </div>
           {isAuthProfile && (

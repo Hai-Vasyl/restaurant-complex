@@ -18,6 +18,7 @@ import { fetchDates } from "../redux/actions/dates"
 import { RootStore } from "../redux/store"
 import { UPDATE_DATE } from "../redux/types/dates"
 import { CLEAR_ERROR_MSG_BOOKING } from "../redux/types/error"
+import MainLoader from "../components/MainLoader"
 import { BiError } from "react-icons/bi"
 
 const Booking: React.FC = () => {
@@ -99,8 +100,13 @@ const Booking: React.FC = () => {
   const isChosen = checkChanges()
 
   if (initLoading || loading) {
-    return <div className='wrapper'>LOADING ...</div>
+    return (
+      <div className='wrapper'>
+        <MainLoader />
+      </div>
+    )
   }
+
   return (
     <div className='wrapper'>
       <Title Icon={BsKanban} title='Бронювання' />
@@ -109,7 +115,8 @@ const Booking: React.FC = () => {
           <div className='range-form__sort'>
             <button
               className='sort-chevron'
-              onClick={() => setSortBehaviour(!sortBehaviour)}>
+              onClick={() => setSortBehaviour(!sortBehaviour)}
+            >
               {sortBehaviour ? <BsChevronUp /> : <BsChevronDown />}
             </button>
             <SortField
@@ -119,7 +126,7 @@ const Booking: React.FC = () => {
               handleChangeSelect={handleChangeSelect}
             />
           </div>
-          <div className='range-form__dates'>
+          <div className='range-form__dates stack-scroll'>
             {dates.map((date) => {
               return (
                 <button
@@ -129,11 +136,13 @@ const Booking: React.FC = () => {
                     date.booked && "slot-btn--booked"
                   }`}
                   key={date._id}
-                  onClick={() => handleBook(date._id)}>
+                  onClick={() => handleBook(date._id)}
+                >
                   <span
                     className={`slot-btn__check ${
                       date.chosen && "slot-btn__check--checked"
-                    }`}>
+                    }`}
+                  >
                     <BsCheck />
                   </span>
                   <span className='slot-btn__settlement'>
@@ -154,7 +163,8 @@ const Booking: React.FC = () => {
           <div
             className={`range-form__msg ${
               msgBooking.length && "range-form__msg--error"
-            }`}>
+            }`}
+          >
             <BiError /> {msgBooking}
           </div>
           <div className='range-form__btns-main'>

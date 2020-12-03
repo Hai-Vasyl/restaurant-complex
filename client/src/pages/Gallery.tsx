@@ -18,6 +18,7 @@ import {
 import useMoveSlider from "../hooks/useMoveSlider"
 import Title from "../components/Title"
 import { TOGGLE_EDIT_IMAGE_FORM } from "../redux/types/popup"
+import MainLoader from "../components/MainLoader"
 import "../styles/gallery.scss"
 
 const Gallery: React.FC = () => {
@@ -59,7 +60,11 @@ const Gallery: React.FC = () => {
   }
 
   if (initLoading || loading) {
-    return <div className='wrapper'>Loading ...</div>
+    return (
+      <div className='wrapper'>
+        <MainLoader />
+      </div>
+    )
   }
   return (
     <div className='wrapper'>

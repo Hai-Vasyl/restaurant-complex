@@ -49,11 +49,20 @@
     border-bottom: 1px solid getColor(secondary);
   }
   &__image {
-    width: 60%;
-    padding-left: 5.5em;
+    border-radius: 50%;
+    width: 65vh;
+    height: 65vh;
+    border: 2px solid getColor(secondary);
+    border-left-style: dashed;
+    border-top-style: dotted;
+    border-right-color: transparent;
+    overflow: hidden;
   }
   &__thumbnail {
     @extend %image;
+    object-position: top left;
+    border-radius: 50%;
+    padding: 10px;
   }
 }
 

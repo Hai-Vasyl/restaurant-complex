@@ -14,6 +14,7 @@ import Button from "../components/Button"
 import useCreateResponse from "../hooks/useCreateResponse"
 import { TOGGLE_FORM_AUTH } from "../redux/types/popup"
 import { BiError } from "react-icons/bi"
+import MainLoader from "../components/MainLoader"
 import "../styles/responses"
 
 const Responses: React.FC = () => {
@@ -99,7 +100,11 @@ const Responses: React.FC = () => {
   }
 
   if (initLoading) {
-    return <div className='wrapper'>LOADING ...</div>
+    return (
+      <div className='wrapper'>
+        <MainLoader />
+      </div>
+    )
   }
   return (
     <div className='wrapper'>
@@ -131,7 +136,8 @@ const Responses: React.FC = () => {
                     : (event) => {
                         event.preventDefault()
                       }
-                }>
+                }
+              >
                 <input
                   className='response__form-input'
                   type='text'
