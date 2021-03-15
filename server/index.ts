@@ -7,6 +7,7 @@ import hrcomplexRoutes from "./routes/hrcomplex"
 import imageRoutes from "./routes/image"
 import responseRoutes from "./routes/response"
 import cors from "cors"
+import path from "path"
 import { config } from "dotenv"
 config()
 
@@ -36,8 +37,15 @@ const { PORT, MONGO_USER, MONGO_PASS, MONGO_DB, NODE_ENV } = process.env
     app.use("/image", imageRoutes)
     app.use("/response", responseRoutes)
 
+    // if (NODE_ENV === "production") {
+    //   app.use(express.static("dist/client"))
+    // }
+
     if (NODE_ENV === "production") {
-      app.use(express.static("dist/client"))
+      app.use(express.static(path.join(__dirname, "../", "client")))
+      app.get("/*", function (req, res) {
+        res.sendFile(path.join(__dirname, "../", "client", "index.html"))
+      })
     }
 
     app.listen(PORT, () => console.log(`Server started on port: ${PORT}`))

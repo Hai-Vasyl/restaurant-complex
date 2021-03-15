@@ -40,6 +40,10 @@ const Gallery: React.FC = () => {
   const { handleMove } = useMoveSlider()
 
   useEffect(() => {
+    console.log("HELLOO")
+  }, [])
+
+  useEffect(() => {
     if (!fetched) {
       dispatch(fetchImages(hrComplex))
     }
