@@ -22,6 +22,8 @@ export const upload_image = async (req: any, res: any) => {
       Bucket: AWS_BUCKET,
       Key: `${uuidv4()}.${imageExt}`,
       Body: file.buffer,
+      ACL: "public-read",
+      Conditions: [{ acl: "public-read" }],
     }
 
     // @ts-ignore
